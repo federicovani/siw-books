@@ -10,24 +10,23 @@ public class Credentials {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @Column(nullable=false, unique=true)
     private String username;
+    @Column(nullable=false)
     private String password;
     private String role;
 
     @OneToOne(cascade = CascadeType.ALL)
     private User user;
 
-    public String getUsername() {
-        return username;
+    public Credentials(String username, String password, String role, User user) {
+        this.username = username;
+        this.password = password;
+        this.role = role;
+        this.user = user;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public Credentials() {}
 
     public User getUser() {
         return user;

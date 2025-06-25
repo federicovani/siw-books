@@ -16,7 +16,7 @@ public class UserService {
     @Autowired
     protected UserRepository userRepository;
 
-    /**
+     /**
      * This method retrieves a User from the DB based on its ID.
      * @param id the id of the User to retrieve from the DB
      * @return the retrieved User, or null if no User with the passed ID could be found in the DB
@@ -35,7 +35,8 @@ public class UserService {
      *                              as the passed User already exists in the DB
      */
     @Transactional
-    public User saveUser(User user) {
+    public User saveUser(String name, String surname, String email) {
+        User user = new User(name, surname, email);
         return this.userRepository.save(user);
     }
 

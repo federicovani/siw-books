@@ -14,8 +14,8 @@ public class Autore {
     private java.time.LocalDate dataNascita;
     private java.time.LocalDate dataMorte;
     private String nazionalita;
-    @OneToOne
-    private Immagine foto;
+    @OneToMany
+    private List<Immagine> immagini;
     @ManyToMany(mappedBy = "autori")
     private List<Libro> libri;
 }

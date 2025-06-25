@@ -1,0 +1,85 @@
+/* Generale */
+body {
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+  margin: 0;
+  padding: 0;
+  color: #333;
+  background-color: #f4f4f4;
+}
+
+/* Header */
+header {
+  background: #6c7ae0;
+  color: #fff;
+  padding: 20px;
+  text-align: center;
+}
+
+header h1 {
+  margin: 0;
+}
+
+/* Navigazione */
+nav ul {
+  list-style: none;
+  padding: 0;
+  background: #333;
+  margin: 0;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+}
+
+nav ul li {
+  margin: 0 10px;
+}
+
+nav ul li a {
+  text-decoration: none;
+  color: #fff;
+  padding: 10px 20px;
+  display: block;
+  transition: all 0.3s;
+}
+
+nav ul li a:hover {
+  background: #555;
+}
+
+/* Main */
+main {
+  padding: 20px;
+}
+section {
+  margin-bottom: 20px;
+  padding: 10px;
+  background: #fff;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+h2 {
+  color: #6c7ae0;
+  border-bottom: 2px solid #6c7ae0;
+  padding-bottom: 5px;
+  margin-bottom: 15px;
+}
+ul {
+  padding: 0;
+  list-style: square inside;
+}
+
+/* Autore-specifico */
+div {
+  margin-bottom: 5px;
+  font-size: 0.9em;
+  color: #555;
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  padding: 10px;
+  background: #333;
+  color: #fff;
+}

@@ -1,10 +1,62 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>Title</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Biblioteca Online</title>
+  <link rel="stylesheet" href="static/css/style.css">
 </head>
 <body>
-
+  <header>
+    <h1>Benvenuto alla Biblioteca Online</h1>
+    <p>Scopri i tuoi libri e autori preferiti!</p>
+  </header>
+  
+  <nav>
+    <ul>
+      <li><a href="#libri">Libri</a></li>
+      <li><a href="#autori">Autori</a></li>
+      <li><a href="#contatti">Contatti</a></li>
+    </ul>
+  </nav>
+  
+  <main>
+    <section id="libri">
+      <h2>Libri in evidenza</h2>
+      <ul>
+        <!-- Ciclo Thymeleaf per i libri -->
+        <li th:each="libro : ${libri}">
+          <strong th:text="${libro.titolo}">Titolo</strong> di 
+          <span th:each="autore : ${libro.autori}" th:text="${autore.nome + ' ' + autore.cognome}">Autore</span>
+        </li>
+      </ul>
+    </section>
+    
+    <section id="autori">
+      <h2>Autori popolari</h2>
+      <ul>
+        <!-- Ciclo Thymeleaf per gli autori -->
+        <li th:each="autore : ${autori}">
+          <span th:text="${autore.nome + ' ' + autore.cognome}">Nome Cognome</span>, 
+          <span th:text="${autore.nazionalita}">Nazionalità</span>
+          <div th:if="${autore.dataNascita}">
+            Nato il <span th:text="${autore.dataNascita}">Data Nascita</span>
+          </div>
+          <div th:if="${autore.dataMorte}">
+            Morto il <span th:text="${autore.dataMorte}">Data Morte</span>
+          </div>
+        </li>
+      </ul>
+    </section>
+    
+    <section id="contatti">
+      <h2>Contattaci</h2>
+      <p>Hai domande? Scrivici a <a href="mailto:info@bibliotecaonline.com">info@bibliotecaonline.com</a></p>
+    </section>
+  </main>
+  
+  <footer>
+    <p>&copy; 2025 Biblioteca Online. Tutti i diritti riservati.</p>
+  </footer>
 </body>
 </html>
