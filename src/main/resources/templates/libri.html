@@ -4,14 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Libri Disponibili</title>
-    <link rel="stylesheet" href="css/style.css"> <!-- Aggiorna al percorso corretto -->
+    <link rel="stylesheet" th:href="@{/css/style.css}"> <!-- Aggiorna al percorso corretto -->
 </head>
 <body>
-    <header>
-        <h1>Tutti i libri disponibili</h1>
-    </header>
+<header>
+    <h1 th:text="${isSearch} == true ? 'Risultati della ricerca: ' + ${searchQuery} + ' ('+${libri.size()}+')': 'Elenco Libri'">Elenco Libri</h1>
+</header>
 
-    <main>
+<main>
+    <!-- Form di ricerca -->
+    <section id="search">
+        <form th:action="@{/libro/search}" method="get">
+            <input type="text" name="query" placeholder="Cerca per titolo..." th:value="${searchQuery}"/>
+            <button type="submit">Cerca</button>
+        </form>
+        <div th:if="${libri.size() == 0}">
+            <h3>Non ci sono libri corrispondenti alla tua ricerca.</h3> <!-- Mostra se non ci sono risultati -->
+        </div>
+    </section>
         <section id="libri">
             <div class="container">
                 <!-- Ciclo Thymeleaf per visualizzare tutti i libri -->
@@ -23,6 +33,14 @@
                         Pubblicato nel: <span th:text="${libro.annoPubblicazione}">Anno</span>
                     </p>
                     <p>Autori: <span th:text="${libro.autoriString}">Elenco Autori</span></p>
+                </div>
+
+                <!-- Mostra tutti i libri post ricerca -->
+                <div class="card" th:if="${isSearch}">
+                    <a th:href="@{/libro}" class="link">
+                        <h2>Mostra tutti i libri</h2>
+                        <p>Clicca qui per esplorare l'intera biblioteca</p>
+                    </a>
                 </div>
             </div>
         </section>

@@ -5,6 +5,8 @@ import it.uniroma3.siw.repository.LibroRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class LibroService {
     @Autowired
@@ -13,4 +15,6 @@ public class LibroService {
     public Object getLibroById(Long id) { return libroRepository.findById(id).get(); }
 
     public Iterable<Libro> getAllLibri() { return libroRepository.findAll(); }
+
+    public List<Libro> searchLibriByTitolo(String query) { return libroRepository.findByTitoloContainingIgnoreCase(query); }
 }

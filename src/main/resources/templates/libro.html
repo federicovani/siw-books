@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${libro.titolo}">Dettagli del Libro</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<header>
+    <nav>
+        <a href="/" class="logo">SiwBooks</a>
+        <a href="/libri" class="nav-link">Tutti i Libri</a>
+        <a href="/autori" class="nav-link">Autori</a>
+    </nav>
+</header>
+
+<main>
+    <section id="book-details">
+        <div class="book-card">
+            <h1 class="book-title" th:text="${libro.titolo}">Titolo del Libro</h1>
+            <p><strong>Anno di Pubblicazione:</strong> <span th:text="${libro.annoPubblicazione}">Anno</span></p>
+            <p><strong>Autori:</strong> <span th:text="${libro.autoriString}">Elenco Autori</span></p>
+
+            <div class="book-images" th:if="${libro.immagini.size()} > 0">
+                <h3>Immagini del Libro</h3>
+                <div class="images-container">
+                    <img th:each="immagine : ${libro.immagini}" th:src="${immagine.url}" th:alt="${immagine.descrizione}"/>
+                </div>
+            </div>
+
+            <div class="book-reviews" th:if="${libro.recensioni.size()} > 0">
+                <h3>Recensioni</h3>
+                <ul>
+                    <li th:each="recensione : ${libro.recensioni}">
+                        <blockquote th:text="${recensione.testo}">Testo della recensione</blockquote>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer>
+    <p>© 2025 SiwBooks - Tutti i diritti riservati</p>
+</footer>
+</body>
+</html>
