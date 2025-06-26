@@ -15,21 +15,21 @@ import org.springframework.security.web.SecurityFilterChain;
 
 import javax.sql.DataSource;
 
+import static it.uniroma3.siw.model.Credentials.ADMIN_ROLE;
+
 @Configuration
 @EnableWebSecurity
 public class AuthConfiguration {
-    @Autowired
-    private DataSource dataSource;
+    @Autowired private DataSource dataSource;
 
-    private static final String ADMIN_ROLE = "ROLE_ADMIN";
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.jdbcAuthentication()
-                .dataSource(dataSource)
-                .authoritiesByUsernameQuery("SELECT username, role from credentials WHERE username=?")
+        auth.jdbcAuthentication().dataSource(dataSource)
+                .authoritiesByUsernameQuery("SELECT username, role FROM credentials WHERE username=?")
                 .usersByUsernameQuery("SELECT username, password, 1 as enabled FROM credentials WHERE username=?");
     }
+
     /**
      * Definizione della catena di filtri di sicurezza.
      */

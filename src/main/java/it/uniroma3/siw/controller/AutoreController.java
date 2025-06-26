@@ -12,13 +12,13 @@ public class AutoreController {
     @Autowired
     private AutoreService autoreService;
 
-    @GetMapping("/libro/{id}")
+    @GetMapping("/autore/{id}")
     public String getAutore(@PathVariable("id") Long id, Model model) {
         model.addAttribute("autore", autoreService.getAutoreById(id));
         return "autore.html";
     }
 
-    @GetMapping("/libro")
+    @GetMapping("/autore")
     public String showAutori(Model model){
         model.addAttribute("autori", autoreService.getAllAutori());
         return "autori.html";
