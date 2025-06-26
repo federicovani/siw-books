@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Autori Disponibili</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}"> <!-- Aggiorna al percorso corretto -->
+</head>
+<body>
+<header>
+  <h1 th:text="${isSearch} == true ? 'Risultati della ricerca: ' + ${searchQuery} + ' ('+${autori.size()}+')': 'Elenco Autori'">Elenco Autori</h1>
+</header>
+
+<main>
+  <!-- Form di ricerca -->
+  <section id="search">
+    <form th:action="@{/autore/search}" method="get">
+      <input type="text" name="query" placeholder="Cerca per nome o cognome..." th:value="${searchQuery}"/>
+      <button type="submit">Cerca</button>
+    </form>
+    <div th:if="${autori.size() == 0}">
+      <h3>Non ci sono autori corrispondenti alla tua ricerca.</h3> <!-- Mostra se non ci sono risultati -->
+    </div>
+  </section>
+
+  <!-- Lista degli Autori -->
+  <section id="autori">
+    <div class="container">
+      <!-- Ciclo Thymeleaf per visualizzare tutti gli autori -->
+      <div class="card" th:each="autore : ${autori}">
+        <a th:href="@{'/autore/' + ${autore.id}}" class="link">
+          <h2 th:text="${autore.nome + ' ' + autore.cognome}">Nome Cognome</h2>
+        </a>
+        <p>
+          Nazionalità: <span th:text="${autore.nazionalita}">Nazionalità</span>
+        </p>
+        <p th:if="${autore.dataNascita}">
+          Nato il: <span th:text="${autore.dataNascita}">Data di nascita</span>
+        </p>
+        <p th:if="${autore.dataMorte}">
+          Morto il: <span th:text="${autore.dataMorte}">Data di morte</span>
+        </p>
+      </div>
+
+      <!-- Mostra tutti gli autori post ricerca -->
+      <div class="card" th:if="${isSearch}">
+        <a th:href="@{/autore}" class="link">
+          <h2>Mostra tutti gli autori</h2>
+          <p>Clicca qui per esplorare l'intera biblioteca</p>
+        </a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <p>© 2025 SiwBooks - Tutti i diritti riservati</p>
+</footer>
+</body>
+</html>

@@ -20,6 +20,8 @@ public class Autore {
     private List<Immagine> immagini;
     @ManyToMany(mappedBy = "autori")
     private List<Libro> libri;
+    @Transient
+    private String libriString;
 
     public Long getId() {
         return id;
@@ -83,6 +85,14 @@ public class Autore {
 
     public void setLibri(List<Libro> libri) {
         this.libri = libri;
+    }
+
+    public String getLibriString() {
+        return libriString;
+    }
+
+    public void setLibriString(String libriString) {
+        this.libriString = libriString;
     }
 
     @Override

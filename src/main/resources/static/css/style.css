@@ -83,3 +83,215 @@ footer {
   background: #333;
   color: #fff;
 }
+
+/* Stile per la sezione generale */
+#libri {
+  margin: 20px 0;
+  text-align: center;
+}
+
+#autori {
+  margin: 20px 0;
+  text-align: center;
+}
+
+
+/* Contenitore del carosello */
+.carousel {
+  display: flex;
+  justify-content: center; /* Centra gli elementi del carosello orizzontalmente */
+  overflow-x: auto; /* Scorrimento orizzontale */
+  gap: 15px; /* Spazio tra gli elementi */
+  padding: 10px;
+  scrollbar-width: thin; /* Stile della scrollbar */
+}
+
+/* Carosello: elementi (libri) */
+.carousel-item {
+  flex: 0 0 auto; /* Mantiene la dimensione di ogni elemento */
+  background: #f4f4f4;
+  border-radius: 8px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  width: 250px; /* Larghezza fissa per ogni libro */
+  text-align: center;
+}
+
+/* Titolo del libro */
+.carousel-item h3 {
+  font-size: 1.2em;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+/* Dettagli degli autori */
+.carousel-item p {
+  font-size: 0.9em;
+  color: #555;
+  margin: 5px 0;
+}
+
+/* Aggiungi uno stile per la scrollbar se necessario */
+.carousel::-webkit-scrollbar {
+  height: 8px;
+}
+
+.carousel::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 4px;
+}
+
+.carousel::-webkit-scrollbar-thumb:hover {
+  background: #999;
+}
+
+/* Stile specifico per il pulsante "Mostra Altro" */
+.carousel-item.mostra-altro {
+  background: #dff0d8; /* Colore di sfondo diverso (verde chiaro) */
+  text-align: center; /* Centrare il contenuto */
+}
+
+.carousel-item.mostra-altro h3 {
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #3c763d; /* Colore testo più intenso */
+}
+
+.carousel-item.mostra-altro p {
+  font-size: 0.9em;
+  color: #3c763d;
+}
+
+.carousel-item.mostra-altro:hover {
+  background: #c8e5bc; /* Cambia gradualmente il colore al passaggio del mouse */
+}
+
+
+.link {
+  text-decoration: none;
+  color: #0066cc; /* Colore del link */
+  font-weight: bold;
+}
+
+.link:hover {
+  color: #003399; /* Colore al passaggio del mouse */
+  text-decoration: underline;
+}
+
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  padding: 20px;
+}
+
+.card {
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 15px;
+  width: 300px;
+  text-align: left;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.card h2 {
+  font-size: 1.5em;
+  margin: 0 0 10px 0;
+}
+
+.card p {
+  font-size: 1em;
+  margin: 5px 0;
+}
+
+footer {
+  background-color: #f4f4f4;
+  text-align: center;
+  padding: 10px 0;
+  border-top: 2px solid #ccc;
+}
+
+footer p {
+  margin: 0;
+  font-size: 0.9em;
+}
+
+/* Stile della barra di ricerca */
+#search {
+  margin: 20px auto;
+  text-align: center;
+}
+
+#search form {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+#search input[type="text"] {
+  padding: 10px 15px;
+  font-size: 16px;
+  border: 2px solid #ccc;
+  border-radius: 25px;
+  width: 300px;
+  transition: all 0.3s ease;
+}
+
+#search input[type="text"]:focus {
+  border-color: #007BFF;
+  outline: none;
+  box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
+}
+
+#search button {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+#search button:hover {
+  background-color: #0056b3;
+  box-shadow: 0 0 10px rgba(0, 123, 255, 0.4);
+}
+
+/* Stile per la sezione dei risultati della ricerca */
+#results-info {
+  margin: 20px auto;
+  text-align: center;
+  font-size: 16px;
+  color: #333;
+  background-color: #f9f9f9;
+  padding: 15px 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+}
+
+#results-info p {
+  margin: 0;
+  line-height: 1.5;
+}
+
+#results-info strong {
+  color: #007BFF;
+}
+
+#results-info a {
+  color: #0056b3;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+#results-info a:hover {
+  text-decoration: underline;
+  color: #004085;
+}
+
+

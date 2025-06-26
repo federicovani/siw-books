@@ -1,8 +1,11 @@
 package it.uniroma3.siw.controller;
 
+import it.uniroma3.siw.model.Autore;
 import it.uniroma3.siw.model.Credentials;
 import it.uniroma3.siw.model.User;
+import it.uniroma3.siw.service.AutoreService;
 import it.uniroma3.siw.service.CredentialsService;
+import it.uniroma3.siw.service.LibroService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -16,13 +19,32 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.util.Collections;
+import java.util.List;
+
 @Controller
 public class AuthenticationController {
     @Autowired
     private CredentialsService credentialsService;
 
+    @Autowired
+    private LibroService libroService;
+
+    @Autowired
+    private AutoreService autoreService;
+
     @GetMapping(value = "/")
     public String index(Model model) {
+        model.addAttribute("libri", libroService.getAllLibri());
+
+        List<Autore> allAutori = (List<Autore>) autoreService.getAllAutori();
+        // Seleziona 3 autori casuali
+        Collections.shuffle(allAutori);
+        List<Autore> randomAutori = allAutori.stream()
+                .limit(3)
+                .toList();
+        model.addAttribute("autori", randomAutori);
+
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication instanceof AnonymousAuthenticationToken) {
             return "index.html";

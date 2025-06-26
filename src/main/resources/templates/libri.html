@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Libri Disponibili</title>
+    <link rel="stylesheet" href="css/style.css"> <!-- Aggiorna al percorso corretto -->
+</head>
+<body>
+    <header>
+        <h1>Tutti i libri disponibili</h1>
+    </header>
+
+    <main>
+        <section id="libri">
+            <div class="container">
+                <!-- Ciclo Thymeleaf per visualizzare tutti i libri -->
+                <div class="card" th:each="libro : ${libri}">
+                    <a th:href="@{'/libro/' + ${libro.id}}" class="link">
+                        <h2 th:text="${libro.titolo}">Titolo del libro</h2>
+                    </a>
+                    <p>
+                        Pubblicato nel: <span th:text="${libro.annoPubblicazione}">Anno</span>
+                    </p>
+                    <p>Autori: <span th:text="${libro.autoriString}">Elenco Autori</span></p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2025 SiwBooks - Tutti i diritti riservati</p>
+    </footer>
+</body>
+</html>

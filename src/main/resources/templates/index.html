@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Biblioteca Online</title>
+  <title>SiwBooks</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -22,35 +22,54 @@
   <main>
     <section id="libri">
       <h2>Libri in evidenza</h2>
-      <ul>
+      <div class="carousel">
         <!-- Ciclo Thymeleaf per i libri -->
-        <li th:each="libro : ${libri}">
-          <strong th:text="${libro.titolo}">Titolo</strong> di 
-          <span th:each="autore : ${libro.autori}" th:text="${autore.nome + ' ' + autore.cognome}">Autore</span>
-        </li>
-      </ul>
+        <div class="carousel-item" th:each="libro : ${libri}">
+          <a th:href="@{'/libro/' + ${libro.id}}" class="link">
+          <h3 th:text="${libro.titolo}">Titolo</h3>
+          <p>
+            di 
+            <span th:each="autore : ${libro.autori}" th:text="${autore.nome + ' ' + autore.cognome}">Autore</span>
+          </p>
+          <p>Anno: <span th:text="${libro.annoPubblicazione}">Anno Pubblicazione</span></p>
+          </a>
+        </div>
+        <!-- Elemento finale: Mostra Altro -->
+        <div class="carousel-item mostra-altro">
+          <a th:href="@{'/libro'}" class="link">
+            <h3>Mostra più libri</h3>
+            <p>Clicca qui per esplorare l'intera biblioteca</p>
+          </a>
+        </div>
+      </div>
     </section>
     
     <section id="autori">
       <h2>Autori popolari</h2>
-      <ul>
-        <!-- Ciclo Thymeleaf per gli autori -->
-        <li th:each="autore : ${autori}">
-          <span th:text="${autore.nome + ' ' + autore.cognome}">Nome Cognome</span>, 
-          <span th:text="${autore.nazionalita}">Nazionalità</span>
-          <div th:if="${autore.dataNascita}">
-            Nato il <span th:text="${autore.dataNascita}">Data Nascita</span>
+        <div class="carousel">
+         <!-- Ciclo Thymeleaf per gli autori -->
+          <div class="carousel-item" th:each="autore : ${autori}">
+            <a th:href="@{'/autore/' + ${autore.id}}" class="link">
+            <h3 th:text="${autore.nome + ' ' + autore.cognome}">Nome Cognome</h3>
+            <p>
+              Nazionalità: <span th:text="${autore.nazionalita}">Nazionalità</span>
+            </p>
+            <p th:if="${autore.dataNascita}">
+              Nato il: <span th:text="${autore.dataNascita}">Data Nascita</span>
+            </p>
+            <p th:if="${autore.dataMorte}">
+              Morto il: <span th:text="${autore.dataMorte}">Data Morte</span>
+            </p>
+            </a>
           </div>
-          <div th:if="${autore.dataMorte}">
-            Morto il <span th:text="${autore.dataMorte}">Data Morte</span>
+          <!-- Elemento finale: Mostra Altro -->
+          <div class="carousel-item mostra-altro">
+            <a th:href="@{'/autore'}" class="link">
+              <h3>Mostra più autori</h3>
+              <p>Clicca qui per esplorare l'intera biblioteca</p>
+            </a>
           </div>
-        </li>
-      </ul>
-    </section>
-    
-    <section id="contatti">
-      <h2>Contattaci</h2>
-      <p>Hai domande? Scrivici a <a href="mailto:info@siwbooks.it">info@siwbooks.it</a></p>
+        </div>
     </section>
   </main>
   

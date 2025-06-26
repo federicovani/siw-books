@@ -18,6 +18,8 @@ public class Libro {
     private List<Immagine> immagini;
     @OneToMany
     private List<Recensione> recensioni;
+    @Transient
+    private String autoriString;
 
     public Long getId() {
         return id;
@@ -65,6 +67,14 @@ public class Libro {
 
     public void setRecensioni(List<Recensione> recensioni) {
         this.recensioni = recensioni;
+    }
+
+    public String getAutoriString() {
+        return autoriString;
+    }
+
+    public void setAutoriString(String autoriString) {
+        this.autoriString = autoriString;
     }
 
     @Override

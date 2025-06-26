@@ -42,11 +42,11 @@ public class AuthConfiguration {
 
                 // Configurazione delle autorizzazioni
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/index", "/register", "/css/**", "/images/**", "favicon.ico").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/register", "/login").permitAll()
+                        .requestMatchers("/", "/index", "/register", "/css/**", "/images/**", "favicon.ico", "/libro").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/register", "/login", "/libro").permitAll()
                         .requestMatchers(HttpMethod.GET, "/admin/**").hasAuthority(ADMIN_ROLE)
                         .requestMatchers(HttpMethod.POST, "/admin/**").hasAuthority(ADMIN_ROLE)
-                        .anyRequest().authenticated()
+                        .anyRequest().permitAll()
                 )
 
                 // Configurazione del login
