@@ -49,13 +49,23 @@ public class AuthenticationController {
         if (authentication instanceof AnonymousAuthenticationToken) {
             return "index.html";
         }
-        else {
-            UserDetails userDetails = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        Object principal = authentication.getPrincipal();
+        if (principal instanceof UserDetails userDetails) {
             Credentials credentials = credentialsService.getCredentials(userDetails.getUsername());
-            if (credentials.getRole().equals(Credentials.ADMIN_ROLE)) {
+
+            // Log del ruolo per debug
+            System.out.println("Ruolo utente: " + credentials.getRole());
+
+            if (credentials != null && credentials.getRole().equals(Credentials.ADMIN_ROLE)) {
                 return "admin/indexAdmin.html";
+            } else {
+                System.out.println("L'utente non è un amministratore.");
             }
+        } else {
+            System.out.println("Principal non è un'istanza di UserDetails.");
         }
+
         return "index.html";
     }
 
@@ -64,22 +74,11 @@ public class AuthenticationController {
         return "formLogin";
     }
 
-    @GetMapping(value = "/success")
-    public String defaultAfterLogin(Model model) {
-
-        UserDetails userDetails = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Credentials credentials = credentialsService.getCredentials(userDetails.getUsername());
-        if (credentials.getRole().equals(Credentials.ADMIN_ROLE)) {
-            return "admin/indexAdmin.html";
-        }
-        return "index.html";
-    }
-
     @GetMapping(value = "/register")
     public String showRegisterForm (Model model) {
         model.addAttribute("user", new User());
         model.addAttribute("credentials", new Credentials());
-        return "formRegisterUser";
+        return "formRegister";
     }
 
     @PostMapping(value = { "/register" })
@@ -88,6 +87,11 @@ public class AuthenticationController {
                                @ModelAttribute("credentials") Credentials credentials,
                                BindingResult credentialsBindingResult,
                                Model model) {
+        // Controllo se lo username esiste già
+        if (credentialsService.getCredentials(credentials.getUsername()) != null) {
+            model.addAttribute("usernameError", "Il nome utente è già registrato.");
+            return "formRegister";
+        }
 
         // se user e credential hanno entrambi contenuti validi, memorizza User e the Credentials nel DB
         if(!userBindingResult.hasErrors() && ! credentialsBindingResult.hasErrors()) {
@@ -96,6 +100,6 @@ public class AuthenticationController {
             model.addAttribute("user", user);
             return "registrationSuccessful";
         }
-        return "registerUser";
+        return "formRegister";
     }
 }

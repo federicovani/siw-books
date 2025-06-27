@@ -3,24 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title th:text="${libro.titolo}">Dettagli del Libro</title>
+    <title>SiwBooks</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
+
+<nav class="navbar">
+    <div class="navbar-container">
+        <div class="navbar-logo">
+            <a th:href="@{'/'}">SiwBooks</a>
+        </div>
+        <ul class="navbar-menu">
+            <li class="navbar-item"><a th:href="@{'/libro'}">Libri</a></li>
+            <li class="navbar-item"><a th:href="@{'/autore'}">Autori</a></li>
+            <li class="navbar-item">
+                <a th:href="${#authentication.authenticated} ? '/logout' : '/login'"
+                   th:text="${#authentication.authenticated} ? 'Logout' : 'Login'">
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
 <header>
-    <nav>
-        <a href="/" class="logo">SiwBooks</a>
-        <a href="/libri" class="nav-link">Tutti i Libri</a>
-        <a href="/autori" class="nav-link">Autori</a>
-    </nav>
+    <h1>Libro</h1>
 </header>
 
 <main>
     <section id="book-details">
         <div class="book-card">
-            <h1 class="book-title" th:text="${libro.titolo}">Titolo del Libro</h1>
+            <h2 class="book-title" th:text="${libro.titolo}">Titolo del Libro</h2>
             <p><strong>Anno di Pubblicazione:</strong> <span th:text="${libro.annoPubblicazione}">Anno</span></p>
-            <p><strong>Autori:</strong> <span th:text="${libro.autoriString}">Elenco Autori</span></p>
 
             <div class="book-images" th:if="${libro.immagini.size()} > 0">
                 <h3>Immagini del Libro</h3>
@@ -29,12 +42,35 @@
                 </div>
             </div>
 
+            <div class="book-authors">
+                <p><strong>Autori</strong></p>
+                <div class="authors-carousel">
+                    <div th:each="autore : ${libro.autori}" class="author-card">
+                        <a th:href="@{'/autore/' + ${autore.id}}" class="link">
+                          <h4 th:text="${autore.nome} + ' ' + ${autore.cognome}">Nome Cognome</h4>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+
             <div class="book-reviews" th:if="${libro.recensioni.size()} > 0">
-                <h3>Recensioni</h3>
+                <h3>
+                    Recensioni
+                    <span th:if="${libro.votoMedio != null}" class="average-rating">
+                      (<span th:text="${#numbers.formatDecimal(libro.votoMedio, 1, 1)}">0.0</span>/5)
+                    </span>
+                </h3>
+
                 <ul>
                     <li th:each="recensione : ${libro.recensioni}">
-                        <blockquote th:text="${recensione.testo}">Testo della recensione</blockquote>
+                        <blockquote>
+                            <h3> <span th:text="${recensione.titolo}">Titolo della recensione</span></h3>
+                            <h4> Voto: <span th:text="${recensione.voto}">Voto della recensione</span>/5</h4>
+                            <p th:text="${recensione.testo}">Testo della recensione</p>
+                        </blockquote>
                     </li>
+
                 </ul>
             </div>
         </div>

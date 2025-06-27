@@ -16,8 +16,8 @@ public class Autore {
     private java.time.LocalDate dataNascita;
     private java.time.LocalDate dataMorte;
     private String nazionalita;
-    @OneToMany
-    private List<Immagine> immagini;
+    @OneToOne
+    private Immagine immagine;
     @ManyToMany(mappedBy = "autori")
     private List<Libro> libri;
     @Transient
@@ -71,12 +71,12 @@ public class Autore {
         this.nazionalita = nazionalita;
     }
 
-    public List<Immagine> getImmagini() {
-        return immagini;
+    public Immagine getImmagine() {
+        return immagine;
     }
 
-    public void setImmagini(List<Immagine> immagini) {
-        this.immagini = immagini;
+    public void setImmagine(Immagine immagine) {
+        this.immagine = immagine;
     }
 
     public List<Libro> getLibri() {
@@ -99,11 +99,11 @@ public class Autore {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Autore autore = (Autore) o;
-        return Objects.equals(id, autore.id) && Objects.equals(nome, autore.nome) && Objects.equals(cognome, autore.cognome) && Objects.equals(dataNascita, autore.dataNascita) && Objects.equals(dataMorte, autore.dataMorte) && Objects.equals(nazionalita, autore.nazionalita) && Objects.equals(immagini, autore.immagini) && Objects.equals(libri, autore.libri);
+        return Objects.equals(id, autore.id) && Objects.equals(nome, autore.nome) && Objects.equals(cognome, autore.cognome) && Objects.equals(dataNascita, autore.dataNascita) && Objects.equals(dataMorte, autore.dataMorte) && Objects.equals(nazionalita, autore.nazionalita) && Objects.equals(immagine, autore.immagine) && Objects.equals(libri, autore.libri);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, nome, cognome, dataNascita, dataMorte, nazionalita, immagini, libri);
+        return Objects.hash(id, nome, cognome, dataNascita, dataMorte, nazionalita, immagine, libri);
     }
 }

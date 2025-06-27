@@ -20,32 +20,76 @@ header h1 {
   margin: 0;
 }
 
-/* Navigazione */
-nav ul {
-  list-style: none;
-  padding: 0;
-  background: #333;
-  margin: 0;
-  overflow: hidden;
+/* Navbar generale */
+.navbar {
+  background-color: #333333; /* Colore di sfondo grigio scuro */
+  color: #ffffff;
+  padding: 0.5rem 1.5rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  position: relative;
+  z-index: 1000;
+}
+
+.navbar-container {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
-nav ul li {
-  margin: 0 10px;
-}
-
-nav ul li a {
+.navbar-logo a {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #7f89e8;
   text-decoration: none;
-  color: #fff;
-  padding: 10px 20px;
-  display: block;
-  transition: all 0.3s;
+  transition: color 0.3s ease;
 }
 
-nav ul li a:hover {
-  background: #555;
+.navbar-logo a:hover {
+  color: #3c50cb;
 }
+
+/* Menu */
+.navbar-menu {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar-item {
+  margin-left: 2rem;
+}
+
+.navbar-item a {
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.navbar-item a:hover {
+  background-color: #7f89e8; /* Sfondo arancione */
+  color: #333333; /* Testo scuro per contrasto */
+}
+
+/* Responso per schermi piccoli */
+@media (max-width: 768px) {
+  .navbar-menu {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .navbar-item {
+    margin-left: 0;
+  }
+}
+
+
 
 /* Main */
 main {
@@ -84,6 +128,11 @@ footer {
   color: #fff;
 }
 
+footer p {
+  color: #333;
+}
+
+
 /* Stile per la sezione generale */
 #libri {
   margin: 20px 0;
@@ -106,7 +155,7 @@ footer {
   scrollbar-width: thin; /* Stile della scrollbar */
 }
 
-/* Carosello: elementi (libri) */
+/* Carosello: elementi */
 .carousel-item {
   flex: 0 0 auto; /* Mantiene la dimensione di ogni elemento */
   background: #f4f4f4;
@@ -115,7 +164,14 @@ footer {
   padding: 15px;
   width: 250px; /* Larghezza fissa per ogni libro */
   text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Aggiunta per l'animazione */
 }
+
+.carousel-item:hover {
+  transform: scale(1.05); /* Ingrandimento leggero del 5% */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Ombra più evidente durante l'hover */
+}
+
 
 /* Titolo del libro */
 .carousel-item h3 {
@@ -169,13 +225,11 @@ footer {
 
 .link {
   text-decoration: none;
-  color: #0066cc; /* Colore del link */
   font-weight: bold;
 }
 
 .link:hover {
   color: #003399; /* Colore al passaggio del mouse */
-  text-decoration: underline;
 }
 
 .container {
@@ -194,7 +248,14 @@ footer {
   width: 300px;
   text-align: left;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Aggiunta per l'animazione */
 }
+
+.card:hover {
+  transform: scale(1.05); /* Ingrandimento leggero del 5% */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Ombra più evidente durante l'hover */
+}
+
 
 .card h2 {
   font-size: 1.5em;
@@ -355,11 +416,11 @@ footer p {
 }
 
 .book-reviews h3 {
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
+  font-size: 1.3rem;
+  margin-bottom: 0.1rem;
   color: #444;
   border-bottom: 2px solid #007BFF;
-  padding-bottom: 0.5rem;
+  padding-bottom: 0.3rem;
   display: inline-block;
 }
 
@@ -380,5 +441,236 @@ footer p {
   border-left: 5px solid #007BFF;
   border-radius: 5px;
 }
+
+.book-reviews h4 {
+  font-size: 1.2rem;
+  color: #007BFF;
+  margin-bottom: 0.5rem;
+}
+
+.book-reviews p {
+  margin: 0.3rem 0;
+  color: #555;
+}
+
+.book-reviews p strong {
+  color: #000;
+}
+
+.book-authors {
+  margin-top: 2rem;
+}
+
+.authors-carousel {
+  display: flex;
+  gap: 1rem;
+  overflow: visible; /* Permette agli elementi ingranditi di uscire dai limiti del contenitore */
+  scroll-behavior: smooth;
+  justify-content: center; /* Centrare gli elementi */
+  margin: 0 auto;
+  padding: 2rem 1rem; /* Aggiunge spazio sopra, sotto e ai lati */
+}
+
+.author-card {
+  background-color: #e6e6e6;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  width: 250px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  margin: 0 0.5rem; /* Aggiunge spazio tra le card per migliorare la visibilità */
+}
+
+.author-card:hover {
+  transform: scale(1.05); /* Ingrandimento di 5% */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Ombra più evidente durante l'hover */
+  z-index: 10; /* Porta la card in primo piano */
+}
+
+
+.author-card h4 {
+  font-size: 1.4rem;
+  color: #007BFF;
+  font-weight: bold;
+  margin: 0.5rem 0;
+  text-transform: capitalize;
+}
+
+.author-card p {
+  font-size: 1rem;
+  color: #555;
+  margin: 0.5rem 0;
+}
+
+.author-card:after {
+  content: "";
+  display: block;
+  margin: 1rem auto 0;
+  width: 60%;
+  height: 3px;
+  background: linear-gradient(to right, #007BFF, #00C6FF);
+  border-radius: 2px;
+}
+
+/* Stile del form */
+#formLogin {
+  margin: 2rem auto;
+  max-width: 1000px;
+  background: white;
+  border-radius: 10px;
+  padding: 2rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+#formLogin h2 {
+  text-align: center; /* Allinea il testo al centro */
+  color: #6c7ae0;
+  border-bottom: 2px solid #6c7ae0;
+  padding-bottom: 5px;
+  margin-bottom: 15px;
+}
+
+
+#formLogin form {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 2rem;
+  background-color: #ffffff;
+  border-radius: 12px;
+  border: 0.5px solid #cacaca;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+#formLogin form div {
+  margin-bottom: 1rem;
+}
+
+#formLogin form label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  color: #333;
+}
+
+#formLogin form input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+#formLogin form input:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0 0 5px #007bff;
+}
+
+#formLogin form button {
+  display: block; /* Assicura che il pulsante occupi l'intera larghezza del contenitore */
+  margin: 1rem auto; /* Centra il pulsante orizzontalmente con margine automatico */
+  padding: 0.8rem; /* Dimensionamento comodo */
+  background-color: #007bff; /* Colore blu del pulsante */
+  color: #fff; /* Testo colore bianco */
+  border: none; /* Rimuove il bordo */
+  border-radius: 8px; /* Arrotondamento agli angoli */
+  font-size: 1rem; /* Dimensione leggibile del font */
+  cursor: pointer; /* Cambia il cursore sugli hover */
+  transition: background-color 0.3s ease; /* Transizione morbida del colore di sfondo */
+}
+
+#formLogin form button:hover {
+  background-color: #0056b3;
+}
+
+/* Errori di validazione */
+#formLogin form span[th\:if] {
+  color: red;
+  font-size: 0.875rem;
+}
+
+/* Struttura del main container */
+#registrazioneCompletata {
+  width: 80%;
+  margin: 50px auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+/* Titolo della sezione */
+#registrazioneCompletata h1 {
+  color: #4CAF50;
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+/* Stile dei dettagli utente */
+#registrazioneCompletata div {
+  margin: 10px 0;
+  font-size: 1.2rem;
+}
+
+/* Stile delle etichette (Nome, Cognome, etc.) */
+#registrazioneCompletata div span:first-child {
+  font-weight: bold;
+  color: #4CAF50;
+  margin-right: 5px;
+}
+
+/* Valori utente */
+#registrazioneCompletata div span:last-child {
+  font-weight: normal;
+  color: #555;
+}
+
+/* Pulsanti generici */
+a.btn {
+  display: inline-block; /* Mantiene il pulsante come blocco inline */
+  text-align: center; /* Centra il testo all'interno del pulsante */
+  margin: 1rem auto; /* Centra il pulsante orizzontalmente e aggiunge margine verticale */
+  padding: 0.8rem 1.5rem; /* Aggiunge spazio interno per rendere il pulsante più grande */
+  background-color: #007bff; /* Colore blu del pulsante */
+  color: #fff; /* Colore del testo bianco */
+  border: none; /* Rimuove il bordo */
+  border-radius: 8px; /* Arrotonda gli angoli */
+  font-size: 1rem; /* Dimensiona il testo */
+  cursor: pointer; /* Cambia il cursore all'hover */
+  transition: background-color 0.3s ease; /* Effetto transizione al passaggio del mouse */
+  box-sizing: border-box; /* Include padding e bordo nella larghezza totale */
+}
+a.btn:hover {
+  background-color: #0056b3;
+}
+
+/* Responsività */
+@media (max-width: 768px) {
+  #registrazioneCompletata {
+    width: 90%;
+    padding: 15px;
+  }
+
+  #registrazioneCompletata h1 {
+    font-size: 1.6rem;
+  }
+
+  #registrazioneCompletata div {
+    font-size: 1rem;
+  }
+
+  a.btn {
+    padding: 8px 12px;
+    font-size: 0.9rem;
+  }
+}
+
+
+
+
+
+
 
 

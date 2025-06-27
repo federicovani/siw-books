@@ -23,3 +23,6 @@ INSERT INTO libro_autori (libri_id, autori_id) VALUES (5, 5); -- Jane Austen è 
 INSERT INTO libro_autori (libri_id, autori_id) VALUES (6, 6); -- Franz Kafka è l'autore di "La metamorfosi"
 INSERT INTO libro_autori (libri_id, autori_id) VALUES (2, 4); -- Gabriel García Márquez e Lev Tolstoj collaborano in "Cent'anni di solitudine"
 INSERT INTO libro_autori (libri_id, autori_id) VALUES (2, 6); -- Anche Franz Kafka contribuisce a "Cent'anni di solitudine"
+
+INSERT INTO recensione (id, titolo, voto, testo, libro_id) VALUES (1, 'Ci sta', 4, 'Buono libro, un po lento sul finale', 2);
+INSERT INTO recensione (id, titolo, voto, testo, libro_id) VALUES (2, 'Non mi è piaciuto', 1, 'Libro lentissimo e noioso, nemmeno un colpo di scena', 2);

@@ -17,6 +17,7 @@ public class Libro {
     @OneToMany
     private List<Immagine> immagini;
     @OneToMany
+    @JoinColumn(name = "libro_id")
     private List<Recensione> recensioni;
     @Transient
     private String autoriString;
@@ -68,6 +69,17 @@ public class Libro {
     public void setRecensioni(List<Recensione> recensioni) {
         this.recensioni = recensioni;
     }
+
+    @Transient
+    public Double getVotoMedio() {
+        if (this.recensioni == null || this.recensioni.isEmpty())
+            return null; // Nessuna recensione
+        return this.recensioni.stream()
+                .mapToInt(Recensione::getVoto)
+                .average()
+                .orElse(0.0); // Ritorna 0.0 se nessuna recensione
+    }
+
 
     public String getAutoriString() {
         return autoriString;

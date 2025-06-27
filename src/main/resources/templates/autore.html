@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SiwBooks</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="navbar-container">
+        <div class="navbar-logo">
+            <a th:href="@{'/'}">SiwBooks</a>
+        </div>
+        <ul class="navbar-menu">
+            <li class="navbar-item"><a th:href="@{'/libro'}">Libri</a></li>
+            <li class="navbar-item"><a th:href="@{'/autore'}">Autori</a></li>
+            <li class="navbar-item">
+                <a th:href="${#authentication.authenticated} ? '/logout' : '/login'"
+                   th:text="${#authentication.authenticated} ? 'Logout' : 'Login'">
+                </a>
+            </li>
+
+        </ul>
+    </div>
+</nav>
+
+<header>
+    <h1>Autore</h1>
+</header>
+
+<main>
+    <section id="book-details">
+        <div class="book-card">
+            <h2 class="book-title" th:text="${autore.nome} + ' ' + ${autore.cognome}">Nome e Cognome</h2>
+            <p><strong>Nazionalità: </strong> <span th:text="${autore.nazionalita}">Nazionalita</span></p>
+            <p><strong>Nato il: </strong> <span th:text="${autore.dataNascita}">Data di nascita</span></p>
+            <p th:if="${autore.dataMorte != null}"><strong>Morto il: </strong> <span th:text="${autore.dataMorte}">Data di morte</span></p>
+
+            <div th:if="${autore.immagine} != null">
+                <div class="images-container">
+                    <img th:each="immagine : ${libro.immagini}" th:src="${immagine.url}" th:alt="${immagine.descrizione}"/>
+                </div>
+            </div>
+            <div class="book-authors">
+                <p><strong>Libri</strong></p>
+                <div class="authors-carousel">
+                    <div th:each="libro : ${autore.libri}" class="author-card">
+                        <a th:href="@{'/libro/' + ${libro.id}}" class="link">
+                            <h4 th:text="${libro.titolo}">Ttolo</h4>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer>
+    <p>© 2025 SiwBooks - Tutti i diritti riservati</p>
+</footer>
+</body>
+</html>

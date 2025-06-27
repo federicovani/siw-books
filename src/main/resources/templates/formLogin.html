@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SiwBooks</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="navbar-container">
+    <div class="navbar-logo">
+      <a th:href="@{'/'}">SiwBooks</a>
+    </div>
+    <ul class="navbar-menu">
+      <li class="navbar-item"><a th:href="@{'/libro'}">Libri</a></li>
+      <li class="navbar-item"><a th:href="@{'/autore'}">Autori</a></li>
+      <li class="navbar-item">
+        <a th:href="${#authentication.authenticated} ? '/logout' : '/login'"
+           th:text="${#authentication.authenticated} ? 'Logout' : 'Login'">
+        </a>
+      </li>
+
+    </ul>
+  </div>
+</nav>
+
+<header>
+  <h1>Login</h1>
+</header>
+
+<section id="formLogin">
+    <h2>Effettua il login</h2>
+  <form th:action="@{/login}" method="POST">
+    <div>
+      <span>Username:</span>
+      <span><input name="username" type="text" required /></span>
+    </div>
+    <div>
+      <span>Password:</span>
+      <span><input name="password" type="password" required /></span>
+    </div>
+    <div>
+      <span th:if="${param.error != null}">Username o password errati</span>
+    </div>
+    <div>
+      <span><button type="submit">Login</button></span>
+      <span><a th:href="@{/register}" class="link"><button type="button">Registrati</button></a></span>
+    </div>
+
+  </form>
+</section>
+
+<footer>
+  <p>© 2025 SiwBooks - Tutti i diritti riservati</p>
+</footer>
+
+</body>
+</html>

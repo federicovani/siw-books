@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import javax.sql.DataSource;
 
@@ -42,18 +43,18 @@ public class AuthConfiguration {
 
                 // Configurazione delle autorizzazioni
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/index", "/register", "/css/**", "/images/**", "favicon.ico", "/libro").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/register", "/login", "/libro").permitAll()
+                        .requestMatchers("/", "/index", "/register", "/css/**", "/images/**", "favicon.ico", "/libro/**", "/autore/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/register", "/login").permitAll()
                         .requestMatchers(HttpMethod.GET, "/admin/**").hasAuthority(ADMIN_ROLE)
                         .requestMatchers(HttpMethod.POST, "/admin/**").hasAuthority(ADMIN_ROLE)
-                        .anyRequest().permitAll()
+                        .anyRequest()
                 )
 
                 // Configurazione del login
                 .formLogin(form -> form
                         .loginPage("/login")
                         .permitAll()
-                        .defaultSuccessUrl("/success", true)
+                        .defaultSuccessUrl("/", true)
                         .failureUrl("/login?error=true")
                 )
 
@@ -63,7 +64,9 @@ public class AuthConfiguration {
                         .logoutSuccessUrl("/")
                         .invalidateHttpSession(true)
                         .deleteCookies("JSESSIONID")
+                        .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                         .clearAuthentication(true)
+                        .permitAll()
                 );
 
         return http.build();

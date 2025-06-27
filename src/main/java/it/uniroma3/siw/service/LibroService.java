@@ -12,7 +12,7 @@ public class LibroService {
     @Autowired
     private LibroRepository libroRepository;
 
-    public Object getLibroById(Long id) { return libroRepository.findById(id).get(); }
+    public Libro getLibroById(Long id) { return libroRepository.findById(id).get(); }
 
     public Iterable<Libro> getAllLibri() { return libroRepository.findAll(); }
 
