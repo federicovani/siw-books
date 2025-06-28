@@ -16,8 +16,7 @@ public class Libro {
     private List<Autore> autori;
     @OneToMany
     private List<Immagine> immagini;
-    @OneToMany
-    @JoinColumn(name = "libro_id")
+    @OneToMany(mappedBy = "libro", cascade = CascadeType.REMOVE)
     private List<Recensione> recensioni;
     @Transient
     private String autoriString;

@@ -16,6 +16,7 @@ public class Recensione {
     private int voto;
     private String testo;
     @ManyToOne
+    @JoinColumn(name = "libro_id")
     private Libro libro;
 
     public Long getId() {
@@ -48,6 +49,14 @@ public class Recensione {
 
     public void setTesto(String testo) {
         this.testo = testo;
+    }
+
+    public Libro getLibro() {
+        return libro;
+    }
+
+    public void setLibro(Libro libro) {
+        this.libro = libro;
     }
 
     @Override

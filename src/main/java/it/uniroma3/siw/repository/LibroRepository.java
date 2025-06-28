@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface LibroRepository extends CrudRepository<Libro, Long> {
     public List<Libro> findByTitoloContainingIgnoreCase(String titolo);
+
+    boolean existsByTitoloIgnoreCase(String titolo);
 }

@@ -11,11 +11,11 @@
 <nav class="navbar">
   <div class="navbar-container">
     <div class="navbar-logo">
-      <a th:href="@{'/'}">SiwBooks</a>
+      <a th:href="@{'/'}">SiwBooks - Admin</a>
     </div>
     <ul class="navbar-menu">
-      <li class="navbar-item"><a th:href="@{'/libro'}">Libri</a></li>
-      <li class="navbar-item"><a th:href="@{'/autore'}">Autori</a></li>
+      <li class="navbar-item"><a th:href="@{'/libroAdmin'}">Libri</a></li>
+      <li class="navbar-item"><a th:href="@{'/autoreAdmin'}">Autori</a></li>
       <li class="navbar-item">
         <a th:href="${#authentication.authenticated} ? '/logout' : '/login'"
            th:text="${#authentication.authenticated} ? 'Logout' : 'Login'">
@@ -34,7 +34,7 @@
 <main>
   <!-- Form di ricerca -->
   <section id="search">
-    <form th:action="@{/autore/search}" method="get">
+    <form th:action="@{/autoreAdmin/search}" method="get">
       <input type="text" name="query" placeholder="Cerca per nome o cognome..." th:value="${searchQuery}"/>
       <button type="submit">Cerca</button>
     </form>
@@ -48,7 +48,20 @@
     <div class="container">
       <!-- Ciclo Thymeleaf per visualizzare tutti gli autori -->
       <div class="card" th:each="autore : ${autori}">
-        <a th:href="@{'/autore/' + ${autore.id}}" class="link">
+
+        <!-- Pulsante di rimozione in alto a destra -->
+        <form th:action="@{'/autoreAdmin/delete/' + ${autore.id}}" method="post" th:object="${autore}" style="position: absolute; top: 10px; right: 10px;">
+          <button
+                  type="submit"
+                  onclick="return confirm('Sei sicuro di voler eliminare questo autore?')"
+                  style="background-color: red; color: white; border: none; padding: 5px; border-radius: 3px; cursor: pointer; transition: background-color 0.3s ease, transform 0.2s ease;"
+                  onmouseover="this.style.backgroundColor='darkred'; this.style.transform='scale(1.1)';"
+                  onmouseout="this.style.backgroundColor='red'; this.style.transform='scale(1)';">
+            &times;
+          </button>
+        </form>
+
+        <a th:href="@{'/autoreAdmin/' + ${autore.id}}" class="link">
           <h2 th:text="${autore.nome + ' ' + autore.cognome}">Nome Cognome</h2>
         <p>
           Nazionalità: <span th:text="${autore.nazionalita}">Nazionalità</span>
@@ -61,18 +74,20 @@
         </p>
         </a>
       </div>
-      <div class="card">
-        <a th:href="@{/autore/formNewAutore}" class="link">
-          <h2>Aggiungi un nuovo autore</h2>
-          <p>Clicca qui per aggiungere un nuovo autore</p>
-        </a>
-      </div>
 
       <!-- Mostra tutti gli autori post ricerca -->
       <div class="card" th:if="${isSearch}">
-        <a th:href="@{/autore}" class="link">
+        <a th:href="@{/autoreAdmin}" class="link">
           <h2>Mostra tutti gli autori</h2>
           <p>Clicca qui per esplorare l'intera biblioteca</p>
+        </a>
+      </div>
+
+      <!-- Tasto per aggiungere un nuovo autore -->
+      <div class="card">
+        <a th:href="@{/autoreAdmin/formNewAutore}" class="link">
+          <h2>Aggiungi un nuovo autore</h2>
+          <p>Clicca qui per aggiungere un nuovo autore</p>
         </a>
       </div>
     </div>

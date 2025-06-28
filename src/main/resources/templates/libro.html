@@ -61,7 +61,9 @@
                       (<span th:text="${#numbers.formatDecimal(libro.votoMedio, 1, 1)}">0.0</span>/5)
                     </span>
                 </h3>
-
+                <div class="add-recensione">
+                    <a th:href="@{/recensione/add/{libroId}(libroId=${libro.id})}">Aggiungi una recensione</a>
+                </div>
                 <ul>
                     <li th:each="recensione : ${libro.recensioni}">
                         <blockquote>

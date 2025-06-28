@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SiwBooks</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}"> <!-- Aggiorna al percorso corretto -->
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="navbar-container">
+    <div class="navbar-logo">
+      <a th:href="@{'/'}">SiwBooks - Admin</a>
+    </div>
+    <ul class="navbar-menu">
+      <li class="navbar-item"><a th:href="@{'/libroAdmin'}">Libri</a></li>
+      <li class="navbar-item"><a th:href="@{'/autoreAdmin'}">Autori</a></li>
+      <li class="navbar-item">
+        <a th:href="${#authentication.authenticated} ? '/logout' : '/login'"
+           th:text="${#authentication.authenticated} ? 'Logout' : 'Login'">
+        </a>
+      </li>
+
+    </ul>
+  </div>
+</nav>
+
+<header>
+  <h1>Nuovo Libro</h1>
+</header>
+
+<section id="formLogin">
+  <h2>Aggiungi nuovo Libro</h2>
+  <form th:action="@{/libroAdmin/formNewLibro}" method="POST">
+    <div>
+      <label>Titolo</label>
+      <span>
+        <input type="text" placeholder="Titolo" required th:field="${libro.titolo}" />
+      </span>
+    </div>
+    <div>
+      <label>Anno di pubblicazione</label>
+      <span>
+        <input type="text" placeholder="Anno di pubblicazione" required th:field="${libro.annoPubblicazione}" />
+      </span>
+    </div>
+    <div>
+      <span th:if="${messaggioErrore != null}"} style="color:red;">Libro già inserito.</span>
+    </div>
+    <div>
+      <button type="submit">Salva Libro</button>
+      <a th:href="@{/libroAdmin}" class="link"><button type="button">Indietro</button></a>
+    </div>
+  </form>
+</section>
+
+<footer>
+  <p>© 2025 SiwBooks - Tutti i diritti riservati</p>
+</footer>
+
+</body>
+</html>
