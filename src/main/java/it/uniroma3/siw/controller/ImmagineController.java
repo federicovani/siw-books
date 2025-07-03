@@ -1,32 +1,45 @@
 package it.uniroma3.siw.controller;
 
-import it.uniroma3.siw.model.Immagine;
-import it.uniroma3.siw.service.ImmagineService;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.net.MalformedURLException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 @RestController
-@RequestMapping("/immagini")
 public class ImmagineController {
 
-    private final ImmagineService immagineService;
+    private final Path rootLocation = Paths.get("src/main/uploads/images");
 
-    public ImmagineController(ImmagineService immagineService) {
-        this.immagineService = immagineService;
-    }
+    @GetMapping("/images/{filename}")
+    public ResponseEntity<Resource> serveFile(@PathVariable String filename) {
+        try {
+            Path file = rootLocation.resolve(filename);
+            if (!Files.exists(file) || !Files.isReadable(file)) {
+                // Se il file non esiste, usa default.png dalla cartella static
+                return ResponseEntity.ok()
+                        .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"default.png\"")
+                        .body(new UrlResource("classpath:/static/default.png"));
+            }
 
-    @PostMapping("/upload")
-    public String caricaImmagine(@RequestParam("file") MultipartFile file) throws Exception {
-        immagineService.saveImmagine(file);
-        return "Upload completato";
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<byte[]> scaricaImmagine(@PathVariable Long id) {
-        Immagine img = immagineService.getImmagineById(id);
-        return ResponseEntity.ok()
-                .header("Content-Type", img.getTipoMime())
-                .body(img.getDati());
+            // Altrimenti carica il file richiesto
+            Resource resource = new UrlResource(file.toUri());
+            if (resource.exists() && resource.isReadable()) {
+                return ResponseEntity.ok()
+                        .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + resource.getFilename() + "\"")
+                        .body(resource);
+            } else {
+                throw new RuntimeException("Impossibile leggere il file: " + filename);
+            }
+        } catch (MalformedURLException e) {
+            throw new RuntimeException("Errore nel file richiesto!", e);
+        }
     }
 }

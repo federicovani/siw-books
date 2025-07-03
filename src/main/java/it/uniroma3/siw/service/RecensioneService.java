@@ -2,6 +2,7 @@ package it.uniroma3.siw.service;
 
 import it.uniroma3.siw.model.Libro;
 import it.uniroma3.siw.model.Recensione;
+import it.uniroma3.siw.model.User;
 import it.uniroma3.siw.repository.LibroRepository;
 import it.uniroma3.siw.repository.RecensioneRepository;
 import jakarta.transaction.Transactional;
@@ -39,7 +40,12 @@ public class RecensioneService {
         return libroId;
     }
 
+    @Transactional
     public void saveRecensione(Recensione recensione) {
         recensioneRepository.save(recensione);
+    }
+
+    public boolean existsByUserAndLibro(User user, Libro libro) {
+        return recensioneRepository.existsByUserAndLibro(user, libro);
     }
 }

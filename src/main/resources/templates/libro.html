@@ -11,15 +11,15 @@
 <nav class="navbar">
     <div class="navbar-container">
         <div class="navbar-logo">
-            <a th:href="@{'/'}">SiwBooks</a>
+            <a th:if="${isAdmin}" th:href="@{'/'}" th:text="'SiwBooks - Admin'"></a>
+            <a th:if="${!isAdmin}" th:href="@{'/'}" th:text="'SiwBooks'"></a>
         </div>
         <ul class="navbar-menu">
             <li class="navbar-item"><a th:href="@{'/libro'}">Libri</a></li>
             <li class="navbar-item"><a th:href="@{'/autore'}">Autori</a></li>
             <li class="navbar-item">
-                <a th:href="${#authentication.authenticated} ? '/logout' : '/login'"
-                   th:text="${#authentication.authenticated} ? 'Logout' : 'Login'">
-                </a>
+                <a th:if="${isAnonymous}" th:href="'/login'" th:text="'Login'"></a>
+                <a th:if="${!isAnonymous}" th:href="'/logout'" th:text="${username} + ' - Logout'"></a>
             </li>
         </ul>
     </div>
@@ -35,41 +35,135 @@
             <h2 class="book-title" th:text="${libro.titolo}">Titolo del Libro</h2>
             <p><strong>Anno di Pubblicazione:</strong> <span th:text="${libro.annoPubblicazione}">Anno</span></p>
 
-            <div class="book-images" th:if="${libro.immagini.size()} > 0">
-                <h3>Immagini del Libro</h3>
+            <div class="book-images" th:if="${libro.immagini != null and libro.immagini.size() > 0}">
+                <p><strong>Immagini del Libro</strong></p>
                 <div class="images-container">
-                    <img th:each="immagine : ${libro.immagini}" th:src="${immagine.url}" th:alt="${immagine.descrizione}"/>
+                    <div th:each="immagine : ${libro.immagini}" style="position: relative; display: inline-block; margin: 10px;">
+                        <!-- Mostra l'immagine -->
+                        <img th:src="@{'/images/' + ${immagine}}" alt="Immagine">
+
+                        <!-- Form per eliminare l'immagine -->
+                        <form th:if="${isAdmin}" th:action="@{'/admin/rimuoviImmagineLibro/' + ${libro.id}}" method="post" style="position: absolute; top: 5px; right: 5px;">
+                            <input type="hidden" name="nomeImmagine" th:value="${immagine}"/>
+                            <button
+                                    class="crossButton"
+                                    type="submit"
+                                    onclick="return confirm('Sei sicuro di rimuovere questo autore da questo libro?')">
+                                &times;
+                            </button>
+                        </form>
+                    </div>
+
                 </div>
+            </div>
+            <div th:if="${isAdmin}">
+                <form th:action="@{'/admin/addImmagineLibro/' + ${libro.id}}" enctype="multipart/form-data" method="post">
+                    <p><strong>Aggiungi delle immagini:</strong></p>
+                    <input
+                            type="file"
+                            name="file"
+                            accept="image/*"
+                            required
+                            multiple
+                            style="padding: 5px 10px; border: 1px solid #ccc; border-radius: 5px; font-size: 16px;">
+
+                    <button
+                            type="submit"
+                            style="background-color: #007bff; color: white; border: none; padding: 8px 15px; border-radius: 5px;
+                            font-size: 16px; cursor: pointer; transition: background-color 0.3s ease, transform 0.2s ease;"
+                            onmouseover="this.style.backgroundColor='#0056b3'; this.style.transform='scale(1.05)';"
+                            onmouseout="this.style.backgroundColor='#007bff'; this.style.transform='scale(1)';">
+                        Salva
+                    </button>
+                </form>
             </div>
 
             <div class="book-authors">
                 <p><strong>Autori</strong></p>
                 <div class="authors-carousel">
                     <div th:each="autore : ${libro.autori}" class="author-card">
+
+                        <!-- ADMIN: Pulsante di rimozione in alto a destra -->
+                        <form th:if="${isAdmin}" th:action="@{'/admin/removeAutoreFromLibro/' + ${autore.id} + '/' + ${libro.id}}" method="post" style="position: absolute; top: 10px; right: 10px;">
+                            <button
+                                    class="crossButton"
+                                    type="submit"
+                                    onclick="return confirm('Sei sicuro di rimuovere questo autore da questo libro?')">
+                                &times;
+                            </button>
+                        </form>
+
                         <a th:href="@{'/autore/' + ${autore.id}}" class="link">
                           <h4 th:text="${autore.nome} + ' ' + ${autore.cognome}">Nome Cognome</h4>
+                        </a>
+                    </div>
+                    <div th:if="${isAdmin}" class="author-card">
+                        <a th:href="@{'/admin/autoriToAdd/' + ${libro.id}}" class="link">
+                            <h4>Aggiungi autore</h4>
                         </a>
                     </div>
                 </div>
             </div>
 
+            <!-- ADMIN: Bottone di eliminazione libro -->
+            <form th:if="${isAdmin}" th:action="@{'/admin/deleteLibro/' + ${libro.id}}" method="post">
+                <button type="submit" onclick="return confirm('Sei sicuro di voler eliminare questo libro?');"
+                        style="background-color: red; color: white; border: none; padding: 10px 15px;
+                        border-radius: 5px; cursor: pointer; font-size: 16px;
+                        transition: background-color 0.3s ease, transform 0.2s ease;"
+                        onmouseover="this.style.backgroundColor='darkred'; this.style.transform='scale(1.1)';"
+                        onmouseout="this.style.backgroundColor='red'; this.style.transform='scale(1)';">
+                    Elimina Libro
+                </button>
+            </form>
+
+            <div id="add-recensione" th:if="${!isAdmin}">
+                <a th:href="@{/recensione/add/{libroId}(libroId=${libro.id})}"
+                   style="
+                           display: inline-block;
+                           padding: 10px 15px;
+                           text-decoration: none;
+                           background-color: #007bff;
+                           color: #ffffff;
+                           font-size: 14px;
+                           border-radius: 5px;
+                           font-family: Arial, sans-serif;
+                           border: none;
+                           cursor: pointer;
+                           transition: background-color 0.3s ease, transform 0.2s ease;"
+                   onmouseover="this.style.backgroundColor='#0056b3'; this.style.transform='scale(1.05)';"
+                   onmouseout="this.style.backgroundColor='#007bff'; this.style.transform='scale(1)';">
+                    Aggiungi una recensione
+                </a>
+            </div>
 
             <div class="book-reviews" th:if="${libro.recensioni.size()} > 0">
                 <h3>
                     Recensioni
                     <span th:if="${libro.votoMedio != null}" class="average-rating">
-                      (<span th:text="${#numbers.formatDecimal(libro.votoMedio, 1, 1)}">0.0</span>/5)
+                      (<span th:text="${#numbers.formatDecimal(libro.votoMedio, 1, 1)}">0.0</span>/5,0)
                     </span>
                 </h3>
-                <div class="add-recensione">
-                    <a th:href="@{/recensione/add/{libroId}(libroId=${libro.id})}">Aggiungi una recensione</a>
-                </div>
                 <ul>
                     <li th:each="recensione : ${libro.recensioni}">
                         <blockquote>
                             <h3> <span th:text="${recensione.titolo}">Titolo della recensione</span></h3>
                             <h4> Voto: <span th:text="${recensione.voto}">Voto della recensione</span>/5</h4>
                             <p th:text="${recensione.testo}">Testo della recensione</p>
+
+                            <!-- Mostriamo il nome completo dell'utente -->
+                            <small th:text="${recensione.user.getName()} + ' ' + ${recensione.user.getSurname()}">Nome Cognome</small>
+
+                            <!-- ADMIN: Bottone per eliminare la recensione -->
+                            <form th:if="${isAdmin}" th:action="@{'/recensione/delete/' + ${recensione.id}}" method="post" style="margin-top: 20px;">
+                                <button type="submit" style="background-color: red; color: white; border: none; padding: 5px 10px;
+                                        border-radius: 5px; cursor: pointer; font-size: 12px;"
+                                        onmouseover="this.style.backgroundColor='darkred'; this.style.transform='scale(1.1)';"
+                                        onmouseout="this.style.backgroundColor='red'; this.style.transform='scale(1)';"
+                                        onclick="return confirm('Sei sicuro di voler eliminare questa recensione?');">
+                                    Elimina recensione
+                                </button>
+                            </form>
                         </blockquote>
                     </li>
 

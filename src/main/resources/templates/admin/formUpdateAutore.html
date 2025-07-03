@@ -31,7 +31,7 @@
 
 <section id="formLogin">
   <h2>Aggiungi nuovo Autore</h2>
-  <form th:action="@{/admin/formNewAutore}" enctype="multipart/form-data" method="POST">
+  <form th:action="@{/admin/formUpdateAutore}" method="POST">
     <div>
       <label>Nome</label>
       <span>
@@ -60,12 +60,6 @@
       <label>Data di morte</label>
       <span>
         <input type="date" placeholder="Data di Morte" th:field="*{autore.dataMorte}" />
-      </span>
-    </div>
-    <div>
-      <label>Immagine</label>
-      <span>
-        <input type="file" name="file" accept="image/*"/>
       </span>
     </div>
     <div>

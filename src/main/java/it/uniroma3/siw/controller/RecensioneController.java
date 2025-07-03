@@ -2,17 +2,16 @@ package it.uniroma3.siw.controller;
 
 import it.uniroma3.siw.model.Libro;
 import it.uniroma3.siw.model.Recensione;
+import it.uniroma3.siw.model.User;
+import it.uniroma3.siw.service.CredentialsService;
 import it.uniroma3.siw.service.LibroService;
 import it.uniroma3.siw.service.RecensioneService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class RecensioneController {
@@ -20,11 +19,13 @@ public class RecensioneController {
     private RecensioneService recensioneService;
     @Autowired
     private LibroService libroService;
+    @Autowired
+    private CredentialsService credentialsService;
 
     @PostMapping("/recensione/delete/{id}")
     public String deleteRecensione(@PathVariable("id") Long id) {
         Long libroId = recensioneService.deleteById(id);
-        return "redirect:/libroAdmin/" + libroId;
+        return "redirect:/libro/" + libroId;
     }
 
     @GetMapping("/recensione/add/{libroId}")
@@ -35,22 +36,24 @@ public class RecensioneController {
         return "formNewRecensione.html";
     }
 
-    /**
-     * Salva una recensione nel database
-     */
     @PostMapping("/recensione/add")
     public String addRecensione(@Valid @ModelAttribute("recensione") Recensione recensione,
-                                BindingResult bindingResult,
-                                @ModelAttribute("libroId") Long libroId,
+                                @RequestParam("libroId") Long libroId,
+                                Authentication authentication,
                                 Model model) {
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("libro", libroService.getLibroById(libroId));
+        String username = (String) model.getAttribute("username");
+        User user = credentialsService.getUserByUsername(username);
+        Libro libro = libroService.getLibroById(libroId);
+        if(!recensioneService.existsByUserAndLibro(user, libro)){
+            recensione.setUser(user);
+            recensione.setLibro(libro);
+            recensioneService.saveRecensione(recensione);
+            return "redirect:/libro/" + libroId;
+        } else {
+            model.addAttribute("messaggioErrore", "Hai già lasciato una recensione per questo libro.");
+            model.addAttribute("libro", libro);
             return "formNewRecensione.html";
         }
-        Libro libro = libroService.getLibroById(libroId);
-        recensione.setLibro(libro);
-        recensioneService.saveRecensione(recensione);
-        return "redirect:/libro/" + libroId;
     }
 
 }

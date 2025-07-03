@@ -2,6 +2,8 @@ package it.uniroma3.siw.model;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "users")
 public class User {
@@ -12,6 +14,8 @@ public class User {
     private String name;
     private String surname;
     private String email;
+    @OneToMany(mappedBy = "user")
+    private List<Recensione> recensioni;
 
     public User(String name, String surname, String email) {
         this.name = name;
@@ -50,5 +54,13 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public List<Recensione> getRecensioni() {
+        return recensioni;
+    }
+
+    public void setRecensioni(List<Recensione> recensioni) {
+        this.recensioni = recensioni;
     }
 }

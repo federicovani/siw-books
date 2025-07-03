@@ -11,17 +11,16 @@
 <nav class="navbar">
   <div class="navbar-container">
     <div class="navbar-logo">
-      <a th:href="@{'/'}">SiwBooks</a>
+      <a th:if="${isAdmin}" th:href="@{'/'}" th:text="'SiwBooks - Admin'"></a>
+      <a th:if="${!isAdmin}" th:href="@{'/'}" th:text="'SiwBooks'"></a>
     </div>
     <ul class="navbar-menu">
       <li class="navbar-item"><a th:href="@{'/libro'}">Libri</a></li>
       <li class="navbar-item"><a th:href="@{'/autore'}">Autori</a></li>
       <li class="navbar-item">
-        <a th:href="${#authentication.authenticated} ? '/logout' : '/login'"
-           th:text="${#authentication.authenticated} ? 'Logout' : 'Login'">
-        </a>
+        <a th:if="${isAnonymous}" th:href="'/login'" th:text="'Login'"></a>
+        <a th:if="${!isAnonymous}" th:href="'/logout'" th:text="${username} + ' - Logout'"></a>
       </li>
-
     </ul>
   </div>
 </nav>
@@ -48,17 +47,33 @@
     <div class="container">
       <!-- Ciclo Thymeleaf per visualizzare tutti gli autori -->
       <div class="card" th:each="autore : ${autori}">
+
+        <!-- ADMIN: Pulsante di rimozione in alto a destra -->
+        <form th:if="${isAdmin}" th:action="@{'/admin/deleteAutore/' + ${autore.id}}" method="post" th:object="${autore}" style="position: absolute; top: 10px; right: 10px;">
+          <button
+                  class="crossButton"
+                  type="submit"
+                  onclick="return confirm('Sei sicuro di voler eliminare questo autore?')">
+            &times;
+          </button>
+        </form>
+
         <a th:href="@{'/autore/' + ${autore.id}}" class="link">
+          <!-- Visualizza l'immagine dell'autore -->
+          <div class="image-container" th:if="${autore.immagine != null}">
+            <img th:src="@{'/images/' + ${autore.immagine}}" th:alt="Immagine"/>
+          </div>
+
           <h2 th:text="${autore.nome + ' ' + autore.cognome}">Nome Cognome</h2>
-        <p>
-          Nazionalità: <span th:text="${autore.nazionalita}">Nazionalità</span>
-        </p>
-        <p th:if="${autore.dataNascita}">
-          Nato il: <span th:text="${autore.dataNascita}">Data di nascita</span>
-        </p>
-        <p th:if="${autore.dataMorte}">
-          Morto il: <span th:text="${autore.dataMorte}">Data di morte</span>
-        </p>
+          <p>
+            Nazionalità: <span th:text="${autore.nazionalita}">Nazionalità</span>
+          </p>
+          <p th:if="${autore.dataNascita}">
+            Nato il: <span th:text="${autore.dataNascita}">Data di nascita</span>
+          </p>
+          <p th:if="${autore.dataMorte}">
+            Morto il: <span th:text="${autore.dataMorte}">Data di morte</span>
+          </p>
         </a>
       </div>
 
@@ -67,6 +82,14 @@
         <a th:href="@{/autore}" class="link">
           <h2>Mostra tutti gli autori</h2>
           <p>Clicca qui per esplorare l'intera biblioteca</p>
+        </a>
+      </div>
+
+      <!-- ADMIN: Tasto per aggiungere un nuovo autore -->
+      <div th:if="${isAdmin}" class="card">
+        <a th:href="@{/admin/formNewAutore}" class="link">
+          <h2>Aggiungi un nuovo autore</h2>
+          <p>Clicca qui per aggiungere un nuovo autore</p>
         </a>
       </div>
     </div>

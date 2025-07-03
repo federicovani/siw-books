@@ -11,15 +11,15 @@
 <nav class="navbar">
   <div class="navbar-container">
     <div class="navbar-logo">
-      <a th:href="@{'/'}">SiwBooks</a>
+      <a th:if="${isAdmin}" th:href="@{'/'}" th:text="'SiwBooks - Admin'"></a>
+      <a th:if="${!isAdmin}" th:href="@{'/'}" th:text="'SiwBooks'"></a>
     </div>
     <ul class="navbar-menu">
       <li class="navbar-item"><a th:href="@{'/libro'}">Libri</a></li>
       <li class="navbar-item"><a th:href="@{'/autore'}">Autori</a></li>
       <li class="navbar-item">
-        <a th:href="${#authentication.authenticated} ? '/logout' : '/login'"
-           th:text="${#authentication.authenticated} ? 'Logout' : 'Login'">
-        </a>
+        <a th:if="${isAnonymous}" th:href="'/login'" th:text="'Login'"></a>
+        <a th:if="${!isAnonymous}" th:href="'/logout'" th:text="${username} + ' - Logout'"></a>
       </li>
     </ul>
   </div>

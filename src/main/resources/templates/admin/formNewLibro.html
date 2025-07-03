@@ -11,17 +11,16 @@
 <nav class="navbar">
   <div class="navbar-container">
     <div class="navbar-logo">
-      <a th:href="@{'/'}">SiwBooks - Admin</a>
+      <a th:if="${isAdmin}" th:href="@{'/'}" th:text="'SiwBooks - Admin'"></a>
+      <a th:if="${!isAdmin}" th:href="@{'/'}" th:text="'SiwBooks'"></a>
     </div>
     <ul class="navbar-menu">
-      <li class="navbar-item"><a th:href="@{'/libroAdmin'}">Libri</a></li>
-      <li class="navbar-item"><a th:href="@{'/autoreAdmin'}">Autori</a></li>
+      <li class="navbar-item"><a th:href="@{'/libro'}">Libri</a></li>
+      <li class="navbar-item"><a th:href="@{'/autore'}">Autori</a></li>
       <li class="navbar-item">
-        <a th:href="${#authentication.authenticated} ? '/logout' : '/login'"
-           th:text="${#authentication.authenticated} ? 'Logout' : 'Login'">
-        </a>
+        <a th:if="${isAnonymous}" th:href="'/login'" th:text="'Login'"></a>
+        <a th:if="${!isAnonymous}" th:href="'/logout'" th:text="${username} + ' - Logout'"></a>
       </li>
-
     </ul>
   </div>
 </nav>
@@ -32,7 +31,7 @@
 
 <section id="formLogin">
   <h2>Aggiungi nuovo Libro</h2>
-  <form th:action="@{/libroAdmin/formNewLibro}" method="POST">
+  <form th:action="@{/admin/formNewLibro}" method="POST" enctype="multipart/form-data">
     <div>
       <label>Titolo</label>
       <span>
@@ -46,11 +45,17 @@
       </span>
     </div>
     <div>
+      <label>Immagini</label>
+      <span>
+        <input type="file" name="file" accept="image/*" multiple/>
+      </span>
+    </div>
+    <div>
       <span th:if="${messaggioErrore != null}"} style="color:red;">Libro già inserito.</span>
     </div>
     <div>
       <button type="submit">Salva Libro</button>
-      <a th:href="@{/libroAdmin}" class="link"><button type="button">Indietro</button></a>
+      <a th:href="@{/libro}" class="link"><button type="button">Indietro</button></a>
     </div>
   </form>
 </section>

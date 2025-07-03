@@ -7,6 +7,7 @@ import jakarta.validation.constraints.Min;
 import java.util.Objects;
 
 @Entity
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "libro_id"})})
 public class Recensione {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -16,8 +17,11 @@ public class Recensione {
     private int voto;
     private String testo;
     @ManyToOne
-    @JoinColumn(name = "libro_id")
+    @JoinColumn(name = "libro_id", nullable = false)
     private Libro libro;
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     public Long getId() {
         return id;
@@ -59,15 +63,23 @@ public class Recensione {
         this.libro = libro;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Recensione that = (Recensione) o;
-        return voto == that.voto && Objects.equals(id, that.id) && Objects.equals(titolo, that.titolo) && Objects.equals(testo, that.testo);
+        return voto == that.voto && Objects.equals(id, that.id) && Objects.equals(titolo, that.titolo) && Objects.equals(testo, that.testo) && Objects.equals(libro, that.libro) && Objects.equals(user, that.user);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, titolo, voto, testo);
+        return Objects.hash(id, titolo, voto, testo, libro, user);
     }
 }

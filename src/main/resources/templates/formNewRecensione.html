@@ -4,24 +4,23 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SiwBooks</title>
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
 
 <nav class="navbar">
   <div class="navbar-container">
     <div class="navbar-logo">
-      <a th:href="@{'/'}">SiwBooks</a>
+      <a th:if="${isAdmin}" th:href="@{'/'}" th:text="'SiwBooks - Admin'"></a>
+      <a th:if="${!isAdmin}" th:href="@{'/'}" th:text="'SiwBooks'"></a>
     </div>
     <ul class="navbar-menu">
       <li class="navbar-item"><a th:href="@{'/libro'}">Libri</a></li>
       <li class="navbar-item"><a th:href="@{'/autore'}">Autori</a></li>
       <li class="navbar-item">
-        <a th:href="${#authentication.authenticated} ? '/logout' : '/login'"
-           th:text="${#authentication.authenticated} ? 'Logout' : 'Login'">
-        </a>
+        <a th:if="${isAnonymous}" th:href="'/login'" th:text="'Login'"></a>
+        <a th:if="${!isAnonymous}" th:href="'/logout'" th:text="${username} + ' - Logout'"></a>
       </li>
-
     </ul>
   </div>
 </nav>
@@ -34,25 +33,25 @@
   <h2>Aggiungi una recensione per il libro: <span th:text="${libro.titolo}">Titolo libro</span>
   </h2>
   <form th:action="@{/recensione/add}" method="POST" th:object="${recensione}">
+    <input type="hidden" name="libroId" th:value="${libro.id}"/>
     <div>
       <label for="titolo">Titolo:</label>
-      <input type="text" id="titolo" th:field="*{recensione.titolo}" placeholder="Inserisci il titolo">
-      <span th:if="${#fields.hasErrors('titolo')}" th:errors="*{recensione.titolo}" class="error"></span>
+      <input type="text" id="titolo" required th:field="${recensione.titolo}" placeholder="Inserisci il titolo">
     </div>
     <div>
       <label for="voto">Voto:</label>
-      <input type="number" id="voto" th:field="*{recensione.voto}" min="1" max="5" placeholder="Valuta da 1 a 5">
-      <span th:if="${#fields.hasErrors('voto')}" th:errors="*{recensione.voto}" class="error"></span>
+      <input type="number" id="voto" required th:field="${recensione.voto}" min="1" max="5" placeholder="Valuta da 1 a 5">
     </div>
     <div>
       <label for="testo">Recensione:</label>
-      <textarea id="testo" th:field="*{recensione.testo}" placeholder="Scrivi la tua recensione"></textarea>
-      <span th:if="${#fields.hasErrors('testo')}" th:errors="*{recensione.testo}" class="error"></span>
+      <textarea id="testo" required th:field="${recensione.testo}" placeholder="Scrivi la tua recensione"></textarea>
     </div>
-
+    <div>
+      <span th:if="${messaggioErrore != null}" th:text="${messaggioErrore}"} style="color:red;">Recensione già inserita.</span>
+    </div>
     <div>
       <button type="submit">Aggiungi Recensione</button>
-      <a th:href="@{/libro/${libro.id}}" class="link"><button type="button">Indietro</button></a>
+      <a th:href="@{'/libro/' + ${libro.id}}" class="link"><button type="button">Indietro</button></a>
     </div>
   </form>
 </section>

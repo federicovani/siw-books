@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SiwBooks</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"> <!-- Aggiorna al percorso corretto -->
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="navbar-container">
+        <div class="navbar-logo">
+            <a th:if="${isAdmin}" th:href="@{'/'}" th:text="'SiwBooks - Admin'"></a>
+            <a th:if="${!isAdmin}" th:href="@{'/'}" th:text="'SiwBooks'"></a>
+        </div>
+        <ul class="navbar-menu">
+            <li class="navbar-item"><a th:href="@{'/libro'}">Libri</a></li>
+            <li class="navbar-item"><a th:href="@{'/autore'}">Autori</a></li>
+            <li class="navbar-item">
+                <a th:if="${isAnonymous}" th:href="'/login'" th:text="'Login'"></a>
+                <a th:if="${!isAnonymous}" th:href="'/logout'" th:text="${username} + ' - Logout'"></a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<header>
+    <h1 th:text="'Seleziona un libro da aggiungere a ' + ${autore.nome} + ' ' + ${autore.cognome}">Seleziona un libro da aggiungere all'Autore </h1>
+</header>
+
+<main>
+        <section id="libri">
+            <div class="container">
+                <!-- Ciclo Thymeleaf per visualizzare tutti i libri -->
+                <div class="card" th:each="libro : ${libriToAdd}">
+
+                    <a th:href="@{'/admin/addLibroToAutore/' + ${libro.id} + '/' + ${autore.id}}" class="link">
+                        <h2 th:text="${libro.titolo}">Titolo del libro</h2>
+                    <p>
+                        Pubblicato nel: <span th:text="${libro.annoPubblicazione}">Anno</span>
+                    </p>
+                    <p>Autori: <span th:text="${libro.autoriString}">Elenco Autori</span></p>
+                    </a>
+                </div>
+
+                <!-- ADMIN: Tasto per aggiungere un nuovo libro -->
+                <div th:if="${isAdmin}" class="card">
+                    <a th:href="@{/admin/formNewLibro}" class="link">
+                        <h2>Aggiungi un nuovo libro</h2>
+                        <p>Clicca qui per aggiungere un nuovo libro</p>
+                    </a>
+                </div>
+            </div>
+            <div>
+                <a th:href="@{'/autore/' + ${autore.id}}"
+                   style="
+                               display: inline-block;
+                               padding: 10px 15px;
+                               text-decoration: none;
+                               background-color: #007bff;
+                               color: #ffffff;
+                               font-size: 18px;
+                               border-radius: 5px;
+                               font-family: Arial, sans-serif;
+                               border: none;
+                               cursor: pointer;
+                               transition: background-color 0.3s ease, transform 0.2s ease;"
+                   onmouseover="this.style.backgroundColor='#0056b3'; this.style.transform='scale(1.05)';"
+                   onmouseout="this.style.backgroundColor='#007bff'; this.style.transform='scale(1)';">
+                    Torna indietro
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2025 SiwBooks - Tutti i diritti riservati</p>
+    </footer>
+</body>
+</html>

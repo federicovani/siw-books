@@ -1,26 +1,60 @@
 package it.uniroma3.siw.service;
 
-import it.uniroma3.siw.model.Immagine;
-import it.uniroma3.siw.repository.ImmagineRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.PostConstruct;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
+import java.util.UUID;
 
 @Service
 public class ImmagineService {
 
-    @Autowired
-    private ImmagineRepository immagineRepository;
+    @Value("${images.path}")
+    private String uploadDir;
 
-    public void saveImmagine(MultipartFile file) throws Exception {
-        Immagine img = new Immagine();
-        img.setNomeFile(file.getOriginalFilename());
-        img.setTipoMime(file.getContentType());
-        img.setDati(file.getBytes());
-        immagineRepository.save(img);
+    // Metodo chiamato automaticamente all'avvio
+    @PostConstruct
+    public void init() {
+        try {
+            // Controlla e crea la directory di upload
+            Path uploadPath = Path.of(uploadDir);
+            if (!Files.exists(uploadPath)) {
+                Files.createDirectories(uploadPath);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Impossibile creare la directory per l'upload: " + uploadDir, e);
+        }
     }
 
-    public Immagine getImmagineById(Long id){
-        return immagineRepository.findById(id).get();
+    // Salva un'immagine e restituisce il nome del file univoco
+    public String saveImage(MultipartFile file) {
+        try {
+            // Genera un nome file unico
+            String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
+            Path filePath = Path.of(uploadDir, fileName);
+
+            // Salva il file nella directory configurata
+            Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+
+            return fileName; // Ritorna il nome del file salvato
+        } catch (IOException e) {
+            throw new RuntimeException("Errore durante il salvataggio del file", e);
+        }
     }
+
+    // Elimina un'immagine
+    public void deleteImage(String filename) {
+        try {
+            Path filePath = Path.of(uploadDir, filename);
+            Files.deleteIfExists(filePath);
+        } catch (IOException e) {
+            throw new RuntimeException("Errore durante l'eliminazione del file", e);
+        }
+    }
+
 }

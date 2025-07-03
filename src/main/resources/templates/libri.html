@@ -11,17 +11,16 @@
 <nav class="navbar">
     <div class="navbar-container">
         <div class="navbar-logo">
-            <a th:href="@{'/'}">SiwBooks</a>
+            <a th:if="${isAdmin}" th:href="@{'/'}" th:text="'SiwBooks - Admin'"></a>
+            <a th:if="${!isAdmin}" th:href="@{'/'}" th:text="'SiwBooks'"></a>
         </div>
         <ul class="navbar-menu">
             <li class="navbar-item"><a th:href="@{'/libro'}">Libri</a></li>
             <li class="navbar-item"><a th:href="@{'/autore'}">Autori</a></li>
             <li class="navbar-item">
-                <a th:href="${#authentication.authenticated} ? '/logout' : '/login'"
-                   th:text="${#authentication.authenticated} ? 'Logout' : 'Login'">
-                </a>
+                <a th:if="${isAnonymous}" th:href="'/login'" th:text="'Login'"></a>
+                <a th:if="${!isAnonymous}" th:href="'/logout'" th:text="${username} + ' - Logout'"></a>
             </li>
-
         </ul>
     </div>
 </nav>
@@ -45,20 +44,43 @@
             <div class="container">
                 <!-- Ciclo Thymeleaf per visualizzare tutti i libri -->
                 <div class="card" th:each="libro : ${libri}">
+
+                    <!-- ADMIN: Pulsante di rimozione in alto a destra -->
+                    <form th:if="${isAdmin}" th:action="@{'/admin/deleteLibro/' + ${libro.id}}" method="post" th:object="${libro}" style="position: absolute; top: 10px; right: 10px;">
+                        <button
+                                class="crossButton"
+                                type="submit"
+                                onclick="return confirm('Sei sicuro di voler eliminare questo libro?')">
+                            &times;
+                        </button>
+                    </form>
+
                     <a th:href="@{'/libro/' + ${libro.id}}" class="link">
+                        <!-- Visualizza l'immagine dell'autore -->
+                        <div class="image-container" th:if="${libro.immagineRandom != null}">
+                            <img th:src="@{'/images/' + ${libro.immagineRandom}}" th:alt="Immagine"/>
+                        </div>
                         <h2 th:text="${libro.titolo}">Titolo del libro</h2>
-                    <p>
-                        Pubblicato nel: <span th:text="${libro.annoPubblicazione}">Anno</span>
-                    </p>
-                    <p>Autori: <span th:text="${libro.autoriString}">Elenco Autori</span></p>
+                        <p>
+                            Pubblicato nel: <span th:text="${libro.annoPubblicazione}">Anno</span>
+                        </p>
+                        <p>Autori: <span th:text="${libro.autoriString}">Elenco Autori</span></p>
                     </a>
                 </div>
 
                 <!-- Mostra tutti i libri post ricerca -->
-                <div class="card" th:if="${isSearch}">
+                <div th:if="${isSearch}" class="card">
                     <a th:href="@{/libro}" class="link">
                         <h2>Mostra tutti i libri</h2>
                         <p>Clicca qui per esplorare l'intera biblioteca</p>
+                    </a>
+                </div>
+
+                <!-- ADMIN: Tasto per aggiungere un nuovo libro -->
+                <div th:if="${isAdmin}" class="card">
+                    <a th:href="@{/admin/formNewLibro}" class="link">
+                        <h2>Aggiungi un nuovo libro</h2>
+                        <p>Clicca qui per aggiungere un nuovo libro</p>
                     </a>
                 </div>
             </div>

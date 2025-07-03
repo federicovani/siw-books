@@ -14,12 +14,13 @@ public class Libro {
     private int annoPubblicazione;
     @ManyToMany
     private List<Autore> autori;
-    @OneToMany
-    private List<Immagine> immagini;
+    private List<String> immagini;
     @OneToMany(mappedBy = "libro", cascade = CascadeType.REMOVE)
     private List<Recensione> recensioni;
     @Transient
     private String autoriString;
+    @Transient
+    private String immagineRandom;
 
     public Long getId() {
         return id;
@@ -53,11 +54,11 @@ public class Libro {
         this.autori = autori;
     }
 
-    public List<Immagine> getImmagini() {
+    public List<String> getImmagini() {
         return immagini;
     }
 
-    public void setImmagini(List<Immagine> immagini) {
+    public void setImmagini(List<String> immagini) {
         this.immagini = immagini;
     }
 
@@ -88,15 +89,23 @@ public class Libro {
         this.autoriString = autoriString;
     }
 
+    public String getImmagineRandom() {
+        return immagineRandom;
+    }
+
+    public void setImmagineRandom(String immagineRandom) {
+        this.immagineRandom = immagineRandom;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Libro libro = (Libro) o;
-        return annoPubblicazione == libro.annoPubblicazione && Objects.equals(id, libro.id) && Objects.equals(titolo, libro.titolo) && Objects.equals(autori, libro.autori) && Objects.equals(immagini, libro.immagini) && Objects.equals(recensioni, libro.recensioni);
+        return annoPubblicazione == libro.annoPubblicazione && Objects.equals(id, libro.id) && Objects.equals(titolo, libro.titolo) && Objects.equals(autori, libro.autori) && Objects.equals(immagini, libro.immagini) && Objects.equals(recensioni, libro.recensioni) && Objects.equals(autoriString, libro.autoriString);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, titolo, annoPubblicazione, autori, immagini, recensioni);
+        return Objects.hash(id, titolo, annoPubblicazione, autori, immagini, recensioni, autoriString);
     }
 }

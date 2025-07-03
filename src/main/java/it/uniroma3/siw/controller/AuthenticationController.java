@@ -53,17 +53,9 @@ public class AuthenticationController {
         Object principal = authentication.getPrincipal();
         if (principal instanceof UserDetails userDetails) {
             Credentials credentials = credentialsService.getCredentials(userDetails.getUsername());
-
-            // Log del ruolo per debug
-            System.out.println("Ruolo utente: " + credentials.getRole());
-
             if (credentials != null && credentials.getRole().equals(Credentials.ADMIN_ROLE)) {
-                return "admin/indexAdmin.html";
-            } else {
-                System.out.println("L'utente non è un amministratore.");
+                return "index.html";
             }
-        } else {
-            System.out.println("Principal non è un'istanza di UserDetails.");
         }
 
         return "index.html";
@@ -102,4 +94,11 @@ public class AuthenticationController {
         }
         return "formRegister";
     }
+
+    @GetMapping("/error")
+    public String handleError(Model model) {
+        model.addAttribute("messaggioErrore", "Si è verificato un errore, riprova più tardi.");
+        return "error.html";
+    }
+
 }

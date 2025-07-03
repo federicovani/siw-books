@@ -89,8 +89,6 @@ header h1 {
   }
 }
 
-
-
 /* Main */
 main {
   padding: 20px;
@@ -130,6 +128,14 @@ footer {
 
 footer p {
   color: #333;
+}
+
+img {
+  max-width: 100%; /* Rende le immagini responsive */
+  height: auto; /* Mantiene le proporzioni dell'immagine */
+  display: block; /* Elimina spazi indesiderati */
+  border-radius: 5px; /* Applica agli angoli dell'immagine un raggio per arrotondarli */
+  object-fit: cover; /* Assicura che l'immagine venga ritagliata correttamente */
 }
 
 
@@ -417,7 +423,8 @@ footer p {
 
 .book-reviews h3 {
   font-size: 1.3rem;
-  margin-bottom: 0.1rem;
+  margin-bottom: 1px;
+  margin-top: 2px;
   color: #444;
   border-bottom: 2px solid #007BFF;
   padding-bottom: 0.3rem;
@@ -558,6 +565,7 @@ footer p {
   padding: 0.75rem;
   border: 1px solid #ccc;
   border-radius: 8px;
+  box-sizing: border-box;
   font-size: 1rem;
 }
 
@@ -588,6 +596,35 @@ footer p {
 #formLogin form span[th\:if] {
   color: red;
   font-size: 0.875rem;
+}
+
+/* Stile specifico per la textarea all'interno della sezione con id "formLogin" */
+#formLogin form textarea {
+  width: 100%;                /* Occupa tutta la larghezza consentita */
+  max-width: 400px;           /* Allinea la larghezza con altri input */
+  padding: 10px;              /* Spaziatura interna */
+  margin: 10px 0;             /* Spaziatura esterna tra gli elementi */
+  border: 1px solid #ccc;     /* Bordo grigio chiaro */
+  border-radius: 8px;         /* Angoli arrotondati */
+  font-size: 1rem;            /* Dimensione del testo */
+  box-sizing: border-box;     /* Include il padding nella larghezza */
+  font-family: Arial, sans-serif; /* Font del testo */
+  background-color: #ffffff;  /* Sfondo chiaro */
+  resize: vertical;              /* Disabilita il ridimensionamento orizzontale*/
+  height: 100px;              /* Altezza fissa */
+}
+
+/* Stile specifico per la textarea disabilitata */
+#formLogin form textarea:disabled {
+  background-color: #f2f2f2; /* Sfondo grigio chiaro per lo stato disabilitato */
+  color: #888;              /* Testo opaco */
+  cursor: not-allowed;      /* Cambia il cursore per lo stato non interattivo */
+}
+
+/* Stile del focus per la textarea */
+#formLogin form textarea:focus {
+  border-color: #007bff;    /* Cambia il bordo a blu */
+  outline: none;            /* Rimuove il contorno predefinito */
 }
 
 /* Struttura del main container */
@@ -626,6 +663,27 @@ footer p {
   font-weight: normal;
   color: #555;
 }
+
+.crossButton {
+  background-color: red;
+  color: white;
+  border: none;
+  padding: 5px;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.crossButton:hover {
+  background-color: darkred;
+  transform: scale(1.1);
+}
+
+.crossButton:active {
+  background-color: #990000;
+  transform: scale(1);
+}
+
 
 /* Pulsanti generici */
 a.btn {
