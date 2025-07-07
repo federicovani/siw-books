@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SiwBooks</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="navbar-container">
+        <div class="navbar-logo">
+            <a th:if="${isAdmin}" th:href="@{'/'}" th:text="'SiwBooks - Admin'"></a>
+            <a th:if="${!isAdmin}" th:href="@{'/'}" th:text="'SiwBooks'"></a>
+        </div>
+        <ul class="navbar-menu">
+            <li class="navbar-item"><a th:href="@{'/libro'}">Libri</a></li>
+            <li class="navbar-item"><a th:href="@{'/autore'}">Autori</a></li>
+            <li class="navbar-item">
+                <a th:if="${isAnonymous}" th:href="'/login'" th:text="'Login/Registrati'"></a>
+                <a th:if="${!isAnonymous}" th:href="'/logout'" th:text="'Logout'"></a>
+            </li>
+            <li th:if="${!isAnonymous}" class="navbar-item"><a th:href="@{'/user'}" th:text="${username}"></a></li>
+        </ul>
+    </div>
+</nav>
+<header>
+    <h1>Profilo Utente</h1>
+</header>
+<main>
+    <section>
+        <h2 th:text="'Benvenuto, ' + ${credentials.user.name} + '!'"></h2>
+        <div>
+            <h3>Dettagli Utente</h3>
+            <table>
+                <thead>
+                <tr>
+                    <th>Campo</th>
+                    <th>Valore</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Nome</td>
+                    <td th:text="${credentials.user.name}"></td>
+                </tr>
+                <tr>
+                    <td>Cognome</td>
+                    <td th:text="${credentials.user.surname}"></td>
+                </tr>
+                <tr>
+                    <td>Email</td>
+                    <td th:text="${credentials.user.email}"></td>
+                </tr>
+                <tr>
+                    <td>Username</td>
+                    <td th:text="${credentials.username}"></td>
+                </tr>
+                <tr>
+                    <td>Ruolo</td>
+                    <td th:text="${credentials.role}"></td>
+                </tr>
+                </tbody>
+            </table>
+            <div>
+                <a class="btn" th:href="@{'/formUpdateUser'}">Modifica profilo</a>
+            </div>
+        </div>
+    </section>
+</main>
+<footer>
+    <p>© 2025 SiwBooks - Tutti i diritti riservati</p>
+</footer>
+</body>
+</html>

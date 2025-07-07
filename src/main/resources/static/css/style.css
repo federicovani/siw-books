@@ -705,8 +705,6 @@ a.btn:hover {
   background-color: #0056b3;
 }
 
-/* Responsività */
-@media (max-width: 768px) {
   #registrazioneCompletata {
     width: 90%;
     padding: 15px;
@@ -724,7 +722,37 @@ a.btn:hover {
     padding: 8px 12px;
     font-size: 0.9rem;
   }
-}
+
+  /* Stile della tabella */
+  table {
+    width: 100%;
+    border-radius: 5px;
+    margin-top: 20px;
+  }
+
+  table th,
+  table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+  }
+
+  /* Header della tabella */
+  table th {
+    background-color: #6c7ae0;
+    color: white;
+    font-weight: bold;
+  }
+
+  /* Riga alternata e hover */
+  table tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+
+  table tr:hover {
+    background-color: #f1f1f1;
+  }
+
 
 
 

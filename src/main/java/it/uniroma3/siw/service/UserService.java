@@ -40,6 +40,11 @@ public class UserService {
         return this.userRepository.save(user);
     }
 
+    @Transactional
+    public void saveUser(User user) {
+        this.userRepository.save(user);
+    }
+
     /**
      * This method retrieves all Users from the DB.
      * @return a List with all the retrieved Users
@@ -51,5 +56,12 @@ public class UserService {
         for(User user : iterable)
             result.add(user);
         return result;
+    }
+
+    @Transactional
+    public boolean existsByEmailAndNotId(String email, Long userId) {
+        return userRepository.findByEmail(email)
+                .filter(user -> !user.getId().equals(userId))
+                .isPresent();
     }
 }

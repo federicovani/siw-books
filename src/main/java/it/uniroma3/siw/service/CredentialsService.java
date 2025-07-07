@@ -44,4 +44,22 @@ public class CredentialsService {
             return credentials.getUser();
         return null;
     }
+
+    public boolean existsByUsernameAndNotId(String username, Long id) {
+        return credentialsRepository.findByUsername(username)
+                .filter(credentials -> !credentials.getId().equals(id))
+                .isPresent();
+    }
+
+    @Transactional
+    public void aggiornaPassword(Credentials credentials, String nuovaPassword) {
+        String encodedPassword = passwordEncoder.encode(nuovaPassword);
+        credentials.setPassword(encodedPassword);
+        credentialsRepository.save(credentials);
+    }
+
+    @Transactional
+    public Credentials updateCredentials(Credentials credentials) {
+        return this.credentialsRepository.save(credentials);
+    }
 }

@@ -76,7 +76,7 @@ public class AuthConfiguration {
                             response.sendRedirect("/error"); // Reindirizza a /error per accessi negati
                         })
                         .authenticationEntryPoint((request, response, authException) -> {
-                            response.sendRedirect("/error"); // Reindirizza a /error per utenti non autenticati
+                            response.sendRedirect("/login"); // Reindirizza a /error per utenti non autenticati
                         })
                 );;
 

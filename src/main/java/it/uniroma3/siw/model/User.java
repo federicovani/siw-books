@@ -60,6 +60,8 @@ public class User {
         return recensioni;
     }
 
+
+
     public void setRecensioni(List<Recensione> recensioni) {
         this.recensioni = recensioni;
     }
