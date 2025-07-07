@@ -90,7 +90,7 @@ public class AutoreController {
             model.addAttribute("autore", autore);
             return "redirect:/autore/" + autore.getId();
         } else {
-            model.addAttribute("messaggioErrore", "Questo artista esiste già");
+            model.addAttribute("messaggioErrore", "Questo autore esiste già");
             return "admin/formNewAutore.html";
         }
     }

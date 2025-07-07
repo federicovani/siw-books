@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SiwBooks</title>
-    <link rel="stylesheet" th:href="@{/css/style.css}"> <!-- Aggiorna al percorso corretto -->
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
 
@@ -26,7 +26,7 @@
 </nav>
 
 <header>
-    <h1 th:text="${isSearch} == true ? 'Risultati della ricerca: ' + ${searchQuery} + ' ('+${libri.size()}+')': 'Elenco Libri'">Elenco Libri</h1>
+    <h1 th:text="${isSearch} == true ? 'Risultati della ricerca: ' + ${searchQuery} : 'Elenco Libri'">Elenco Libri</h1>
 </header>
 
 <main>

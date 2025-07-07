@@ -26,7 +26,7 @@
 </nav>
 
 <header>
-  <h1 th:text="${isSearch} == true ? 'Risultati della ricerca: ' + ${searchQuery} + ' ('+${autori.size()}+')': 'Elenco Autori'">Elenco Autori</h1>
+  <h1 th:text="${isSearch} == true ? 'Risultati della ricerca: ' + ${searchQuery} : 'Elenco Autori'">Elenco Autori</h1>
 </header>
 
 

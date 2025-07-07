@@ -155,7 +155,7 @@
                             <small th:text="${recensione.user.getName()} + ' ' + ${recensione.user.getSurname()}">Nome Cognome</small>
 
                             <!-- ADMIN: Bottone per eliminare la recensione -->
-                            <form th:if="${isAdmin}" th:action="@{'/recensione/delete/' + ${recensione.id}}" method="post" style="margin-top: 20px;">
+                            <form th:if="${isAdmin or recensione.user.equals(user)}" th:action="@{'/recensione/delete/' + ${recensione.id}}" method="post" style="margin-top: 20px;">
                                 <button type="submit" style="background-color: red; color: white; border: none; padding: 5px 10px;
                                         border-radius: 5px; cursor: pointer; font-size: 12px;"
                                         onmouseover="this.style.backgroundColor='darkred'; this.style.transform='scale(1.1)';"
