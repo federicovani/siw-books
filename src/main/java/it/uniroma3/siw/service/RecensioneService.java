@@ -48,4 +48,8 @@ public class RecensioneService {
     public boolean existsByUserAndLibro(User user, Libro libro) {
         return recensioneRepository.existsByUserAndLibro(user, libro);
     }
+
+    public Recensione getById(Long id) {
+        return recensioneRepository.findById(id).orElse(null);
+    }
 }

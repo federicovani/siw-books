@@ -8,7 +8,9 @@ import it.uniroma3.siw.service.LibroService;
 import it.uniroma3.siw.service.RecensioneService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -24,8 +26,24 @@ public class RecensioneController {
 
     @PostMapping("/recensione/delete/{id}")
     public String deleteRecensione(@PathVariable("id") Long id) {
-        Long libroId = recensioneService.deleteById(id);
-        return "redirect:/libro/" + libroId;
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = null;
+        if (!(authentication == null || authentication instanceof AnonymousAuthenticationToken)) {
+            Object principal = authentication.getPrincipal();
+            if (principal instanceof org.springframework.security.core.userdetails.UserDetails userDetails) {
+                String username = userDetails.getUsername();
+                user = credentialsService.getUserByUsername(username);
+            }
+        }
+        Recensione recensione = recensioneService.getById(id);
+        User userRecensione = recensione.getUser();
+        if(userRecensione.equals(user)) {
+            Long libroId = recensioneService.deleteById(id);
+            return "redirect:/libro/" + libroId;
+        }
+        else{
+            return "redirect:/libro/" + recensione.getLibro().getId();
+        }
     }
 
     @GetMapping("/recensione/add/{libroId}")
